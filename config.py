@@ -1,4 +1,5 @@
 from langchain_core.prompts import ChatPromptTemplate
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 translator_llm_prompt = ChatPromptTemplate.from_messages([
     (
@@ -147,3 +148,9 @@ orders = [
     (4, 8, 36, 'Protein Shake', 1, 350, 'veg', 9),
     (4, 10, 46, 'Gulab Jamun', 1, 200, 'veg', 3),
 ]
+
+
+
+
+db_name='food_agent.db'
+model=ChatGoogleGenerativeAI(model='gemini-3.5-flash')
