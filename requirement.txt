@@ -1,5 +1,0 @@
-groq
-langraph
-fastpi
-langchain_google_genai
-pydantic

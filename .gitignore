@@ -1,5 +1,7 @@
 .env
 .venv/
+menu.db
+food_agent.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
