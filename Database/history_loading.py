@@ -4,6 +4,7 @@ from Database.food_data_db import db_connection
 from models.English_translator import english_translator
 from models.voice_llm import voice_transcript_generator,path
 
+data=voice_transcript_generator(path)
 order_details=english_translator(data)
 user_id=order_details['id']
 cursor, conn =db_connection(db_name)
