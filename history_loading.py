@@ -12,10 +12,17 @@ cursor, conn =db_connection(db_name)
 
 def found_customer_data(user_id : int):
 
-    cursor.execute(f"SELECT * FROM users WHERE id==?",(user_id,))
+    cursor.execute(f"SELECT * FROM users WHERE cust_id==?",(user_id,))
     data=cursor.fetchone()
     if data:
-        cursor.execute(f"SELECT * FROM user_data WHERE user_id=={data[0]}")
+        cursor.execute(f"""
+            SELECT 
+            r.name,u.name,u.spice,u.price,u.type_of_food,u.healthy_rating
+            FROM user_data as u
+            INNER JOIN restaurants as r
+            ON u.rest_id = r.branch_id
+            WHERE u.user_id=={user_id}
+            """)
         customer_history=cursor.fetchall()
 
         return customer_history

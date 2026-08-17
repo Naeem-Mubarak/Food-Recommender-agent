@@ -13,13 +13,13 @@ cursor , conn =db_connection(db_name)
 
 cursor.executescript("""
 CREATE TABLE IF NOT EXISTS restaurants (
-    id INTEGER PRIMARY KEY,
+    branch_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL,
     cuisine_type TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS dishes (
-    id INTEGER PRIMARY KEY,
+    dish_id INTEGER PRIMARY KEY,
     restaurant_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     spice INTEGER NOT NULL CHECK(spice BETWEEN 1 AND 5),
@@ -27,19 +27,19 @@ CREATE TABLE IF NOT EXISTS dishes (
     type_of_food TEXT NOT NULL,
     healthy_rating INTEGER NOT NULL,
     popularity_score REAL NOT NULL,
-    FOREIGN KEY (restaurant_id) REFERENCES restaurants(id)
+    FOREIGN KEY (restaurant_id) REFERENCES restaurants(branch_id)
 );
 """)
 
 
 cursor.executescript("""
 CREATE TABLE IF NOT EXISTS users(
-    id INTEGER PRIMARY KEY,
+    cust_id INTEGER PRIMARY KEY,
     name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_data(
-    id INTEGER PRIMARY KEY,
+    order_id INTEGER PRIMARY KEY,
     user_id INTEGER,
     rest_id INTEGER,
     dish_id INTEGER,
@@ -48,9 +48,9 @@ CREATE TABLE IF NOT EXISTS user_data(
     price INTEGER,
     type_of_food TEXT,
     healthy_rating INTEGER,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (rest_id) REFERENCES restaurants(id),
-    FOREIGN KEY (dish_id) REFERENCES dishes(id)
+    FOREIGN KEY (user_id) REFERENCES users(cust_id),
+    FOREIGN KEY (rest_id) REFERENCES restaurants(branch_id),
+    FOREIGN KEY (dish_id) REFERENCES dishes(dish_id)
 );
 """)
 
