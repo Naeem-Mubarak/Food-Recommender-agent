@@ -1,10 +1,9 @@
 import sqlite3
 from config import db_name 
-from food_data_db import db_connection
-from English_translator import english_translator
-from voice_llm import voice_transcript_generator,path
+from Database.food_data_db import db_connection
+from models.English_translator import english_translator
+from models.voice_llm import voice_transcript_generator,path
 
-data=voice_transcript_generator(path)
 order_details=english_translator(data)
 user_id=order_details['id']
 cursor, conn =db_connection(db_name)

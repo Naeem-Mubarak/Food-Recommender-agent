@@ -1,5 +1,5 @@
 from config import translator_llm_prompt
-from voice_llm import voice_transcript_generator,path
+from models.voice_llm import voice_transcript_generator,path
 from pydantic import BaseModel,Field
 from typing import Annotated,Optional,Dict
 from config import model
