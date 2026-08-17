@@ -1,6 +1,6 @@
 import os
 from groq import Groq
-from config import voice_llm_prompt
+from config.prompts import voice_llm_prompt
 
 
 

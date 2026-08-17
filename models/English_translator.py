@@ -1,8 +1,8 @@
-from config import translator_llm_prompt
+from config.prompts import translator_llm_prompt
 from models.voice_llm import voice_transcript_generator,path
 from pydantic import BaseModel,Field
 from typing import Annotated,Optional,Dict
-from config import model
+from config.system_info import model
 
 
 
@@ -36,3 +36,5 @@ def english_translator(data):
     output=response.model_dump()
 
     return output
+
+# {'id': 1, 'name': 'Guest', 'order': 'Spicy burger', 'order_info': {'taste': 'spicy', 'budget': None}}
