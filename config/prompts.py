@@ -1,34 +1,68 @@
 from langchain_core.prompts import ChatPromptTemplate
 
+```python
 translator_llm_prompt = ChatPromptTemplate.from_messages([
     (
         "system",
         """
-You are an expert Urdu-English translator.
+You are an expert restaurant order information extraction system.
 
-The user input may contain:
-- Urdu script
-- Roman Urdu
-- English
-- Urdu-English code-switching
+Your task is to extract structured information from the user's English input and return it according to the provided schema.
 
-Translate the input into natural English.
+Extract ONLY information that is explicitly stated or can be directly inferred from the user's request.
 
-Rules:
-1. Preserve the exact meaning.
-2. Preserve the user's intent.
-3. Do not add information.
-4. Do not remove information.
-5. Interpret Roman Urdu according to its meaning, not word-by-word.
-6. Keep food names, restaurant names, brands, quantities,
-   prices and numbers accurate.
-7. If a word is already English, keep it when appropriate.
-8. Do not explain anything.
-9. Output ONLY the English translation.
+Schema fields:
+
+1. id
+   - Extract the customer's ID if explicitly provided.
+   - If not provided, return 0.
+
+2. name
+   - Extract the customer's name if explicitly provided.
+   - If not provided, return None.
+
+3. order
+   - Extract the food item, dish, or order the customer is interested in.
+   - Preserve the exact food name.
+   - If no order is mentioned, return None.
+
+4. order_info.taste
+   - Identify the taste category of the ordered food based on the user's description.
+   - Use "Spice" for spicy/savory/spiced foods.
+   - Use "Sweet" for sweet foods.
+   - If the taste cannot be determined, return None.
+   - Do not invent a taste that the user did not specify or that cannot be directly inferred.
+
+5. order_info.budget
+   - Extract the maximum or stated budget in the user's request.
+   - Return the numeric value only.
+   - If no budget is provided, return 0.
+
+6. order_info.spice_or_sugar_level
+   - Extract the user's requested sweetness or spiciness level.
+   - The value must be between 0 and 10.
+   - If the user explicitly provides a level, use that value.
+   - If the user uses a qualitative expression such as "very spicy", "slightly spicy", "very sweet", or "a little sweet", convert it to an appropriate value from 0 to 10.
+   - If no spice or sweetness level is provided, return 0.
+   - Never invent a level without evidence from the user's input.
+
+General rules:
+- Input is already in English. DO NOT translate it.
+- Extract information only; do not generate a response to the user.
+- Do not add information that is not present or directly inferable.
+- Do not remove information that belongs to the schema.
+- Preserve food names, names, quantities, prices, IDs, and numbers accurately.
+- Do not confuse the food's general taste with the customer's requested spice/sugar level.
+- If a field is missing, use the specified default:
+  - Integer fields: 0
+  - String fields: None
+- Return only the structured output required by the schema.
 """
     ),
     ("human", "{sentence}")
 ])
+```
+
 
 
 voice_llm_prompt = """
