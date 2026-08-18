@@ -11,6 +11,7 @@ class order_info(BaseModel):
 
     taste : Annotated[Optional[str],Field(default='None',description='taste of food customer orders spicy or sweet')]
     budget : Annotated[Optional[int],Field(default=0,description='Budget of the user')]
+    spice_or_sugar_level : Annotated[Optional[int],Field(ge=0,le=10,default=0,description="rate sweet or spice according to the taste factor provided by the user")]
 
 
 class order_schema(BaseModel):
@@ -36,5 +37,6 @@ def english_translator(data):
     output=response.model_dump()
 
     return output
+
 
 # {'id': 1, 'name': 'Guest', 'order': 'Spicy burger', 'order_info': {'taste': 'spicy', 'budget': None}}
