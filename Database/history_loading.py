@@ -2,10 +2,9 @@ from config.system_info import DB_PATH
 from Database.db_connection import db_connection
 from models.English_translator import english_translator
 from models.voice_llm import voice_transcript_generator,path
+import random
 
-data=voice_transcript_generator(path)
-order_details=english_translator(data)
-user_id=order_details['id']
+
 cursor, conn =db_connection(DB_PATH)
 
 
@@ -25,11 +24,10 @@ def found_customer_data(user_id : int):
         customer_history=cursor.fetchall()
 
         return customer_history
-    
-    cursor.execute("INSERT INTO users (cust_id,name) VALUES (?,?)",(user_id,order_details['name']))
-    conn.commit()
+
     return []
 
+    
 
 
 
