@@ -2,20 +2,23 @@ from Nodes.state import state_schema
 
 def check_completeness_node(state : state_schema):
 
-    if state['order']=='None':
 
-        print("interrupt and ask for order")
+    order = state['order']
+    budget = state['order_info']['budget']
 
-    elif state['order_info']['budget'] == 'None' or 0:
+    if order is None:
 
-        print("Interrupt and ask the budget")
+        state['order_eval'] = 'missing'
 
-    elif state['order_info']['taste'] == 'None':
+        return state
 
-        print("Interrupt and ask for taste")
+    missing_budget = (budget == 0)
 
-        
-    
+    if missing_budget:
 
+        state['order_eval'] = 'missing'
+        return state
 
-
+    else:
+        state['order_eval'] = 'complete'
+        return state
