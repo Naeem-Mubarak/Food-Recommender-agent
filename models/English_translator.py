@@ -50,7 +50,9 @@ data=input("Enter your order: ")
 
 d=english_translator(data)
 
-print(d)
 
 
-# {'id': 0, 'name': None, 'order': 'balanced healthy meal', 'order_info': {'taste': 'healthy', 'budget': 500, 'spice_level': 4, 'sugar_level': 4}}
+
+
+# {'id': 0, 'name': None, 'order': None, 'order_info': {'type_of_food': None, 'budget': 0, 'spice_level': 0, 'sugar_level': 0}}
+
