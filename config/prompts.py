@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 
-```python
+
 translator_llm_prompt = ChatPromptTemplate.from_messages([
     (
         "system",
@@ -24,13 +24,18 @@ Schema fields:
 3. order
    - Extract the food item, dish, or order the customer is interested in.
    - Preserve the exact food name.
-   - If no order is mentioned, return None.
+   - If no order is mentioned then try to feel the emotion of the person and suggest it something 
+   - Examples:
+   - (if tone is happy and nothing is ordered) -> (then in order go for something sweet)
+   - (if tone is feeling weak and want something healthy) -> (then in order go for something healthy)
+   - (if he is feeling boring) -> (then in order go for something refreshing)
 
 4. order_info.taste
    - Identify the taste category of the ordered food based on the user's description.
    - Use "Spice" for spicy/savory/spiced foods.
    - Use "Sweet" for sweet foods.
-   - If the taste cannot be determined, return None.
+   - User "healthy" for some thing healthy.
+   - If the taste cannot be determined, return (fast food or healthy).
    - Do not invent a taste that the user did not specify or that cannot be directly inferred.
 
 5. order_info.budget
@@ -38,13 +43,24 @@ Schema fields:
    - Return the numeric value only.
    - If no budget is provided, return 0.
 
-6. order_info.spice_or_sugar_level
-   - Extract the user's requested sweetness or spiciness level.
+6. order_info.spice_level
+   - Extract the user's requested  spiciness level.
    - The value must be between 0 and 10.
    - If the user explicitly provides a level, use that value.
-   - If the user uses a qualitative expression such as "very spicy", "slightly spicy", "very sweet", or "a little sweet", convert it to an appropriate value from 0 to 10.
-   - If no spice or sweetness level is provided, return 0.
+   - If the user uses a qualitative expression such as "very spicy", "slightly spicy" convert it to an appropriate value from 0 to 10.
+   - If no spice level is provided, find on the basis or tone of the order.
+   - Remember one thing if there is something ambiguis in the order then set the level according to your suggestion means if you suggest something like fast food then spice level will be high if something sweet then the spice level will be zero.
+
+
+7. order_info.sugar_level
+
+- Extract the user's requested  sweetness level.
+   - The value must be between 0 and 10.
+   - If the user explicitly provides a level, use that value.
+   - If the user uses a qualitative expression such as "very sweet", or "a little sweet", convert it to an appropriate value from 0 to 10.
+   - If no sweetness level is provided, find on the basis or tone of the order.
    - Never invent a level without evidence from the user's input.
+   - Remember one thing if there is something ambiguis in the order then set the level according to your suggestion means if you suggest something like fast food then sugar level will be zero if something sweet then sugar_level will be high.
 
 General rules:
 - Input is already in English. DO NOT translate it.
@@ -61,7 +77,6 @@ General rules:
     ),
     ("human", "{sentence}")
 ])
-```
 
 
 
