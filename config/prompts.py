@@ -29,13 +29,15 @@ Schema fields:
    - (if tone is happy and nothing is ordered) -> (then in order go for something sweet)
    - (if tone is feeling weak and want something healthy) -> (then in order go for something healthy)
    - (if he is feeling boring) -> (then in order go for something refreshing)
+   - but if there is no tone at all then send None (try to do this most of the time if there is nothing ordered or you didn't find any tone or emotion)
 
-4. order_info.taste
+4. order_info.ty_of_food
    - Identify the taste category of the ordered food based on the user's description.
    - Use "Spice" for spicy/savory/spiced foods.
    - Use "Sweet" for sweet foods.
    - User "healthy" for some thing healthy.
    - If the taste cannot be determined, return (fast food or healthy).
+   - If there is nothing in order then make it None
    - Do not invent a taste that the user did not specify or that cannot be directly inferred.
 
 5. order_info.budget
