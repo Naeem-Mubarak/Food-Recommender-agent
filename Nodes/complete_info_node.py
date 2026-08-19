@@ -41,8 +41,11 @@ def complete_info(state : state_schema):
 
     output = response.model_dump()
 
-    state['order'] = output['order']
-    state['order_info']['budget'] = output['budget']
+    if output['order'] is not None:
+        state['order'] = output['order']
+
+    if output["budget"] is not None:
+        state["order_info"]["budget"] = output["budget"]
 
     return state
 

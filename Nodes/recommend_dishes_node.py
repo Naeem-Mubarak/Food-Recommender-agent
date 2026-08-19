@@ -8,8 +8,10 @@ from langchain_core.prompts import ChatPromptTemplate
 
 class menu_item(TypedDict):
 
+    rest_id : int
     restaurant_name : str
     cuisine_type : str
+    dish_id : int
     dish_name : str
     spice_level : int
     dish_price : int

@@ -28,3 +28,10 @@ class state_schema(TypedDict):
         ]
 
     recommendations : List[dict]
+
+    selected_item : dict[any,any]
+
+    confirm_order : Annotated[
+        Literal['confirm','not-confirm'],
+        Field(description="Either order is confirm or not")
+    ]
