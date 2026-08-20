@@ -22,7 +22,7 @@ class order_schema(BaseModel):
 
     id : Annotated[Optional[int],Field(ge=0,default=0,description='Unique id of the customer')]
 
-    name : Annotated[Optional[str],Field(default='Customer',description='Name of the customer')]
+    name : Annotated[Optional[str],Field(default=None,description='Name of the customer')]
 
     order : Annotated[Optional[str],Field(default=None,description='Order customer interested in')]
     
@@ -46,9 +46,6 @@ def english_translator(data):
     return output
 
 
-data=input("Enter your order: ")
-
-d=english_translator(data)
 
 
 
