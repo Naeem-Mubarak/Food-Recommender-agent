@@ -59,6 +59,6 @@ def recommendation(state: state_schema):
         'menu': menu
     })
 
-    state['recommendations']=recommendations
+    state['recommendations'] = recommendations.model_dump()['recommendations']
 
     return state

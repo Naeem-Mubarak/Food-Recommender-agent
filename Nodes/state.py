@@ -1,4 +1,4 @@
-from typing import TypedDict,Optional,List,Literal,Annotated
+from typing import TypedDict,Optional,List,Literal,Annotated,Any
 from pydantic import Field
 
 
@@ -19,7 +19,7 @@ class state_schema(TypedDict):
     order_info : Optional[dict]
 
     # history can be a dict (if there is ) or can be list (if nothing is in history)
-    history : dict[str , any] | List[any]
+    history : dict[str , Any] | List[Any]
 
     # either order_info is complete or not
     order_eval : Annotated[
@@ -29,7 +29,7 @@ class state_schema(TypedDict):
 
     recommendations : List[dict]
 
-    selected_item : dict[any,any]
+    selected_item : dict[Any,Any]
 
     confirm_order : Annotated[
         Literal['confirm','not-confirm'],

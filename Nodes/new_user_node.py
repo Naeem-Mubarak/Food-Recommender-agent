@@ -15,15 +15,13 @@ cursor, conn = db_connection(DB_PATH)
 def id_gen():
 
     # getting all the ids present in db
-    li=cursor.execute("SELECT cust_id FROM users")
+    li = [row[0] for row in cursor.execute("SELECT cust_id FROM users").fetchall()]
     id_gen = random.randint(0, 100)
 
     # generating a unique id which is not present in db
     while (id_gen,) in li:
 
         id_gen = random.randint(0,100)
-            
-    conn.close()
       
     return id_gen
 
@@ -81,7 +79,6 @@ def new_user(state : state_schema):
 
             )
             conn.commit()
-            cursor.close()
 
             # updating state
             state['user_id'] = new_id

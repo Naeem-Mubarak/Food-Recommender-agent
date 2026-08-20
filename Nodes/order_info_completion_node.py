@@ -8,4 +8,4 @@ def order_info_completion(state : state_schema):
 
         return 'complete_info'
 
-    return 'recommendation'
+    return 'recommendations'

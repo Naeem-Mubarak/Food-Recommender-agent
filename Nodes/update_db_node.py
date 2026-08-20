@@ -12,12 +12,11 @@ def update_db(state : state_schema):
 
     order = [state['user_id'],item['rest_id'],item['dish_id'],item['dish_name'],item['spice_level'],item['dish_price'],item['type_of_food'],item['healthy_rating']]
 
-    cursor.executemany(
+    cursor.execute(
     "INSERT INTO user_data (user_id, rest_id, dish_id, name, spice, price, type_of_food, healthy_rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     order)
 
     conn.commit()
-    conn.close()
 
     return state
 

@@ -9,4 +9,4 @@ def conditional_node(state : state_schema) -> Literal['new_user_node','history_l
 
         return 'history_loader'
     
-    return 'new_user_node'    
+    return 'new_user'    

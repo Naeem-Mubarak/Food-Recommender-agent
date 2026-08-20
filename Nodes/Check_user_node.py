@@ -7,14 +7,20 @@ cursor, conn = db_connection(DB_PATH)
 
 def check_user(state : state_schema):
 
-    name = cursor.execute("SELECT name FROM WHERE cust_id=?",(state['user_id'],))
-    li = cursor.execute("SELECT cust_id FROM users")
+    row = cursor.execute("SELECT name FROM users WHERE cust_id=?",(state['user_id'],)).fetchone()
+    name = row[0] if row else None
+    li = cursor.execute("SELECT cust_id FROM users").fetchall()
 
-    if (state['user_id'],) in li:
+    if row:
 
         if state['name'] == name:
 
             state['evaluator'] = 'correct'
+        else:
+            state['evaluator'] = 'in-correct'
+
     else:
 
         state['evaluator'] = 'in-correct'
+
+    return state
