@@ -1,8 +1,5 @@
 from config.system_info import DB_PATH 
 from Database.db_connection import db_connection
-from models.English_translator import english_translator
-from models.voice_llm import voice_transcript_generator,path
-import random
 
 
 cursor, conn =db_connection(DB_PATH)
