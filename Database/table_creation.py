@@ -1,8 +1,8 @@
 from Database.db_connection import db_connection
-from config.system_info import db_name
+from config.system_info import DB_PATH
 
 
-cursor , conn =db_connection(db_name)
+cursor , conn =db_connection(DB_PATH)
 
 
 cursor.executescript("""

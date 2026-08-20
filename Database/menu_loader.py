@@ -13,7 +13,10 @@ def menu_loader():
           ON r.branch_id = d.restaurant_id
     """)
 
-    menu = cursor.fetchall()
+    rows = cursor.fetchall()
+    cols = ['rest_id', 'restaurant_name', 'cuisine_type', 'dish_id', 'dish_name', 'spice_level', 'dish_price', 'type_of_food', 'healthy_rating', 'popularity_score']
+
+    menu = [dict(zip(cols, row)) for row in rows]
 
     return menu
 
