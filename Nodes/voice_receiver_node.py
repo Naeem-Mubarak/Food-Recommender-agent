@@ -14,13 +14,14 @@ class id_getter(BaseModel):
 
 def reciever_node(state : state_schema):
 
-    user_message = interrupt({
-        'type' : 'starting point',
-        'reason' : 'collecting users data',
-        'instruction' : 'tell your id and name'
-    })
+    # user_message = interrupt({
+    #     'type' : 'starting point',
+    #     'reason' : 'collecting users data',
+    #     'instruction' : 'Sir please tell your ID and name'
+    # })
 
-    user_input = voice_transcript_generator(user_message)
+    user_input = voice_transcript_generator(state['path'])
+    state['voice'] = user_input
 
     prompt = ChatPromptTemplate.from_messages([
     ("system",
@@ -44,7 +45,7 @@ def reciever_node(state : state_schema):
     chain = prompt | structured_llm
 
     response = chain.invoke({
-        'user_input' : str(user_input)
+        'user_input' : state['voice']
     })
     response = response.model_dump()
     state['user_id'] = response['u_id']

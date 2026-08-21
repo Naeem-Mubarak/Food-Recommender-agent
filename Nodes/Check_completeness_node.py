@@ -16,7 +16,7 @@ def check_completeness_node(state : state_schema):
 
         return state
 
-    missing_budget = (budget == 0)
+    missing_budget = budget is None or budget == 0
 
     if missing_budget:
 

@@ -42,10 +42,10 @@ def recommendation(state: state_schema):
         3. Their order information
         4. The available menu
 
-        Suggest a maximum of 5 dishes.
+        Suggest a maximum of 3 dishes.
 
         The menu contains:
-        restaurant_name, cuisine_type, dish_name, spice_level,
+        rest_id, restaurant_name, cuisine_type, dish_id, dish_name, spice_level,
         dish_price, type_of_food, healthy_rating, popularity_score.
         '''),
         ('human',
@@ -63,7 +63,19 @@ def recommendation(state: state_schema):
         'menu': menu
     })
 
+    dishes = recommendations.model_dump()
+
     # state updation
-    state['recommendations'] = recommendations.model_dump()['recommendations']
+    state['recommendations'] = dishes['recommendations']
+
+    # data user can see for each 
+    select_data = ['restaurant_name','cuisine_type','dish_name','spice_level','dish_price','type_of_food','healthy_rating']
+
+    filtered_dishes=[
+    {k: item[k] for k in select_data if k in item}
+    for item in dishes]
+
+    print(filtered_dishes)
+
 
     return state

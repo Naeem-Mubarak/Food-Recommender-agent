@@ -7,12 +7,12 @@ from langgraph.graph.message import add_messages
 # state the agent which will get updated throughout the flow 
 class state_schema(TypedDict):
 
+    path : str
+
     voice : str
 
     user_id : int | None = None
     name : str
-
-    messages : Annotated[list[BaseMessage],add_messages]
 
     # evaluating the id and name 
     evaluator : Annotated[

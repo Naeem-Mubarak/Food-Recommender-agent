@@ -16,10 +16,11 @@ def id_gen():
 
     # getting all the ids present in db
     li = [row[0] for row in cursor.execute("SELECT cust_id FROM users").fetchall()]
+    random.seed(42)
     id_gen = random.randint(0, 100)
 
     # generating a unique id which is not present in db
-    while (id_gen,) in li:
+    while id_gen in li:
 
         id_gen = random.randint(0,100)
       
@@ -47,7 +48,7 @@ def new_user(state : state_schema):
              # interrupting the flow to take user name
             new_user_name = interrupt({
                     "type" : "New user",
-                    "message" : f"Your new_id is {new_id} now tell me your name" 
+                    "message" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
             })
     
             prompt = ChatPromptTemplate.from_messages([
@@ -59,8 +60,10 @@ def new_user(state : state_schema):
 
             # enforcing schema
             structured_llm = model.with_structured_output(name_schema)
+
+            chain = prompt | structured_llm
     
-            response = structured_llm.invoke({
+            response = chain.invoke({
                 'new_user_name' : new_user_name
             })
     

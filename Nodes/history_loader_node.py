@@ -42,6 +42,6 @@ def history_loader(state: state_schema):
     })
 
     # state updation
-    state['history']=response
+    state['history']=response.model_dump()
 
     return state
