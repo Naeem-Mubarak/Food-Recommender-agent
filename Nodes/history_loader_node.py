@@ -6,10 +6,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from Database.history_loading import found_customer_data
 
 
-
-
-
-
+# defining schema so llm can fetch exactly this data from the history
 class history_schema(BaseModel):
 
     rest_name : Annotated[Optional[str],Field(description='Name of the restaurant')] = None
@@ -26,10 +23,9 @@ class history(BaseModel):
 
 
 
-
-
 def history_loader(state: state_schema):
 
+    # history of the current user
     data=found_customer_data(state['user_id'])
 
     prompt=ChatPromptTemplate.from_messages([
@@ -37,6 +33,7 @@ def history_loader(state: state_schema):
         ('human','I run a restaurant and i want to suggest my customer according to his past orders so i will give you his past orders you have to organize them in such a way that an LLM can easily understand and return then into the form of python dictionary if order history is an empty list then you can also return an empty dictionary \n order_hisotry={data}')
     ])
 
+    # enforcing schema
     strucutred_llm=model.with_structured_output(history)
 
     chain = prompt | strucutred_llm
@@ -44,6 +41,7 @@ def history_loader(state: state_schema):
         'data':data
     })
 
+    # state updation
     state['history']=response
 
     return state

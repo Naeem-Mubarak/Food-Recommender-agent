@@ -6,6 +6,8 @@ from config.system_info import model
 from langchain_core.prompts import ChatPromptTemplate
 
 
+# Defining schema to allow LLM to extract exaclty these two things from the user order
+
 class order_schema(BaseModel):
 
     order : Annotated[
@@ -21,6 +23,8 @@ class order_schema(BaseModel):
 
 def complete_info(state : state_schema):
 
+    # interrupting flow to collect the data from user
+
     order_data = interrupt({
           'type' : "order info collection",
           'reason' : "missing order information",
@@ -32,6 +36,8 @@ def complete_info(state : state_schema):
         ('human',"{order_data}")
     ])
 
+    # forcing schema
+
     structured_llm = model.with_structured_output(order_schema)
 
     chain = prompt | structured_llm
@@ -39,7 +45,10 @@ def complete_info(state : state_schema):
         'order_data' : order_data
     })
 
+    # converting pydantic object to dict
     output = response.model_dump()
+
+    # state updation
 
     if output['order'] is not None:
         state['order'] = output['order']

@@ -1,18 +1,23 @@
 from typing import TypedDict,Optional,List,Literal,Annotated,Any
 from pydantic import Field
+from langchain_core.messages import BaseMessage
+from langgraph.graph.message import add_messages
 
 
+# state the agent which will get updated throughout the flow 
 class state_schema(TypedDict):
 
     voice : str
 
-    user_id : int
+    user_id : int | None = None
     name : str
 
-    # evaluating the order info
+    messages : Annotated[list[BaseMessage],add_messages]
+
+    # evaluating the id and name 
     evaluator : Annotated[
         Literal['correct','in-correct'],
-        Field(description='Evaluating the information given by customer either is correct or not')
+        Field(description='Evaluating the information given by customer correct or not')
         ]
 
     order : str

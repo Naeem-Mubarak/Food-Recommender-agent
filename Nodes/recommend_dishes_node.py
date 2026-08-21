@@ -6,6 +6,8 @@ from Database.menu_loader import menu_loader
 from langchain_core.prompts import ChatPromptTemplate
 
 
+
+# defining schema which users will see to order
 class menu_item(TypedDict):
 
     rest_id : int
@@ -28,6 +30,7 @@ class menu_schema(BaseModel):
 
 def recommendation(state: state_schema):
 
+    # loading menu
     menu=menu_loader()
 
     prompt=ChatPromptTemplate.from_messages([
@@ -49,6 +52,7 @@ def recommendation(state: state_schema):
         "history of customer: {history} \n customer current requirement order: {order} \n order_info: {order_info} \n if something is None it means not provided by the customer you have to manage that on the basis of previous history menu : {menu}")
     ])
 
+    # enforcing schema
     structured_llm=model.with_structured_output(menu_schema)
 
     chain = prompt | structured_llm
@@ -59,6 +63,7 @@ def recommendation(state: state_schema):
         'menu': menu
     })
 
+    # state updation
     state['recommendations'] = recommendations.model_dump()['recommendations']
 
     return state

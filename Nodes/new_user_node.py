@@ -56,7 +56,8 @@ def new_user(state : state_schema):
                 - Don't pick useless things as name the name must be clear."""),
                 ('human',"{new_user_name}")
             ])
-    
+
+            # enforcing schema
             structured_llm = model.with_structured_output(name_schema)
     
             response = structured_llm.invoke({
