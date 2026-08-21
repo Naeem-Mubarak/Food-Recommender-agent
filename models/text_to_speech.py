@@ -1,12 +1,16 @@
-from kokoro import KPipeline
-import soundfile as sf
-import numpy as np
+import os
+from config.system_info import groq_client
 
 
-async def text_to_speech_stream(text, websocket):
-    pipeline = KPipeline(lang_code="a")
-    generator = pipeline(text, voice="af_heart")
 
-    for graphemes, phonemes, audio in generator:
-        audio_bytes = audio.astype(np.float32).tobytes()
-        await websocket.send_bytes(audio_bytes) 
+def text_to_speech(text: str, voice: str = "hannah") -> bytes:
+    """
+    Converts text to speech. Returns raw audio bytes - nothing written to disk.
+    """
+    response = groq_client.audio.speech.create(
+        model="canopylabs/orpheus-v1-english",
+        voice=voice,
+        input=text,
+        response_format="wav"
+    )
+    return response.read()

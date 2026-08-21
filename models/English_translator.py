@@ -1,7 +1,6 @@
 from config.prompts import translator_llm_prompt
-from models.speech_to_text import voice_transcript_generator
 from pydantic import BaseModel,Field
-from typing import Annotated,Optional,Dict
+from typing import Annotated,Optional
 from config.system_info import model
 
 
