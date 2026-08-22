@@ -35,4 +35,4 @@ flowchart LR
 
 </details>
 
-Static PNG exports of the graph are also available in [`Graph/`](Graph/).
+Static PNG exports of the graph are also available in [`assests/`](assests/).
