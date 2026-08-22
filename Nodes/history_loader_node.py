@@ -17,6 +17,7 @@ class history_schema(BaseModel):
     healthy_rating : Annotated[Optional[int],Field(description='How much food is healthy')] = None
 
 
+# storing List of dicts to the history
 class history(BaseModel):
 
     history : List[history_schema] = []

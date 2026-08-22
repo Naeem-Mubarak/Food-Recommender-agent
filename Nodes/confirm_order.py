@@ -4,6 +4,7 @@ from typing import Literal
 from langgraph.types import interrupt
 from config.system_info import model
 from langchain_core.prompts import ChatPromptTemplate
+from models.speech_to_text import voice_transcript_generator
 
 
 class confirmation_response(BaseModel):
@@ -17,6 +18,11 @@ def order_confirmation(state : state_schema):
         'instruction' : 'yes if wants otherwise no'
     })
 
+    state['path'] = confirmation
+    text = voice_transcript_generator(state['path'])
+    state['voice'] = text
+
+    # enforcing schema on the LLM
     structured_llm=model.with_structured_output(confirmation_response)
     prompt = ChatPromptTemplate.from_messages([
         ('system',
@@ -33,11 +39,13 @@ def order_confirmation(state : state_schema):
     chain = prompt | structured_llm
 
     response = chain.invoke({
-        'confirmation' : confirmation
+        'confirmation' : state['voice']
     })
 
+    # converting pydantic object to dict
     response=response.model_dump()
 
+    # state updation
     state['confirm_order'] = response['sign']
 
     return state

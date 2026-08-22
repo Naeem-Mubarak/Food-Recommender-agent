@@ -7,6 +7,7 @@ from pydantic import BaseModel,Field
 from typing import Optional,Annotated
 from langchain_core.prompts import ChatPromptTemplate
 import random
+from models.speech_to_text import voice_transcript_generator
 
 
 cursor, conn = db_connection(DB_PATH)
@@ -50,12 +51,16 @@ def new_user(state : state_schema):
                     "type" : "New user",
                     "message" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
             })
+
+            state['path'] = new_user_name
+            text = voice_transcript_generator(state['path'])
+            state['voice'] = text
     
             prompt = ChatPromptTemplate.from_messages([
                 ('system',"""You are an intelligent AI assistant so you have to fetch the name of from the given sentence. Instructions:                                                                                         - if nothing feels like name then return None.
                 - Try you level best to find the name.
                 - Don't pick useless things as name the name must be clear."""),
-                ('human',"{new_user_name}")
+                ('human',"{text}")
             ])
 
             # enforcing schema
@@ -64,7 +69,7 @@ def new_user(state : state_schema):
             chain = prompt | structured_llm
     
             response = chain.invoke({
-                'new_user_name' : new_user_name
+                'text' : state['voice']
             })
     
             # converting pydantic model to dict 

@@ -5,6 +5,7 @@ from pydantic import BaseModel,Field
 from typing import Annotated
 from langchain_core.prompts import ChatPromptTemplate
 from Nodes.recommend_dishes_node import menu_item
+from models.speech_to_text import voice_transcript_generator
  
 
 
@@ -26,6 +27,10 @@ def select_item(state : state_schema):
         "message" : "Select the dish you want to final"
     })
 
+    state['path'] = item
+    text = voice_transcript_generator(state['path'])
+    state['voice'] = text
+
 
     # enforcing schema 
     structured_llm=model.with_structured_output(dish_name)
@@ -38,7 +43,7 @@ def select_item(state : state_schema):
     chain = prompt | structured_llm
 
     response = chain.invoke({
-        'item' : item,
+        'item' : state['voice'],
         'menu' : state['recommendations']
     })
 

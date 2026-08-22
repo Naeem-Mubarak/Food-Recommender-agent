@@ -22,6 +22,7 @@ class menu_item(TypedDict):
     popularity_score : int
 
 
+# list of dict (dishes) recommended by LLM
 class menu_schema(BaseModel):
 
     recommendations : List[menu_item]
