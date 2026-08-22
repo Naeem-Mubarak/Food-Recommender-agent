@@ -4,7 +4,7 @@
 flowchart LR
     start(["__start__"]) --> data_receiver["data_receiver<br/>receives voice"]
     data_receiver -.->|"invalid input"| data_receiver
-    data_receiver -.-> check_user["check_user<br/>routes new vs. returning user"]
+    data_receiver -.-> check_user["check_user<br/>routes new vs. existing user"]
 
     check_user -.->|"existing user"| history_loader["history_loader<br/>loads past order history"]
     check_user -.->|"new user"| new_user["new_user<br/>creates a new user record"]
@@ -33,4 +33,4 @@ flowchart LR
 
 
 # AI-Food-recommendation-agent
-AI Mood-Based Food Recommendation Agent — A LangGraph + Gemini + Groq(STT) agent that turns vague voice cravings (e.g., "something spicy, mid-budget") into structured filters, then ranks dishes using simulated order history and retrieval — delivering one confident recommendation instead of generic search results.
+AI Mood-Based Food Recommendation Agent — A LangGraph + Gemini + Groq(STT) + Groq(TTS) agent that turns vague voice cravings (e.g., "something spicy, mid-budget") into structured filters, then ranks dishes using simulated order history and retrieval — delivering one confident recommendation instead of generic search results.
