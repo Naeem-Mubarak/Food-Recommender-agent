@@ -17,7 +17,7 @@ def voice_transcript_generator(path):
             )
     return data.text
 
-# path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/test_output2.wav"
+# path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/confirmation.wav"
 # text = voice_transcript_generator(path)
 # print(text)
 

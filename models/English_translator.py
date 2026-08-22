@@ -3,14 +3,14 @@ from pydantic import BaseModel,Field
 from typing import Annotated,Optional
 from config.system_info import model
 
-
+from models.speech_to_text import voice_transcript_generator
 
 
 class order_info(BaseModel):
 
     type_of_food : Annotated[Optional[str],Field(default=None,description='taste of food customer orders spicy or sweet')]
 
-    budget : Annotated[Optional[int],Field(default=0,description='Budget of the user')]
+    budget : Annotated[Optional[int],Field(default=None,description='Budget of the user')]
 
     spice_level : Annotated[Optional[int],Field(ge=0,le=10,default=0,description="rate sweet or spice according to the taste factor provided by the user if there is something")]
 
@@ -18,10 +18,6 @@ class order_info(BaseModel):
 
 
 class order_schema(BaseModel):
-
-    id : Annotated[Optional[int],Field(ge=0,default=0,description='Unique id of the customer')]
-
-    name : Annotated[Optional[str],Field(default=None,description='Name of the customer')]
 
     order : Annotated[Optional[str],Field(default=None,description='Order customer interested in')]
     
@@ -45,10 +41,16 @@ def english_translator(data):
     return output
 
 
+path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/complete_info.wav"
 
 
 
 
 
-# {'id': 0, 'name': None, 'order': None, 'order_info': {'type_of_food': None, 'budget': 0, 'spice_level': 0, 'sugar_level': 0}}
+
+text=voice_transcript_generator(path)
+data=english_translator(text)
+print(data)
+
+# {'order': None, 'order_info': {'type_of_food': None, 'budget': 0, 'spice_level': 0, 'sugar_level': 0}}
 

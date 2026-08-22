@@ -13,14 +13,6 @@ Extract ONLY information that is explicitly stated or can be directly inferred f
 
 Schema fields:
 
-1. id
-   - Extract the customer's ID if explicitly provided.
-   - If not provided, return 0.
-
-2. name
-   - Extract the customer's name if explicitly provided.
-   - If not provided, return None.
-
 3. order
    - Extract the food item, dish, or order the customer is interested in.
    - Preserve the exact food name.
@@ -43,7 +35,7 @@ Schema fields:
 5. order_info.budget
    - Extract the maximum or stated budget in the user's request.
    - Return the numeric value only.
-   - If no budget is provided, return 0.
+   - If no budget is provided, return None.
 
 6. order_info.spice_level
    - Extract the user's requested  spiciness level.

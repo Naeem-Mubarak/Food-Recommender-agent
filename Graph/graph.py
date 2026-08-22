@@ -14,6 +14,7 @@ from Nodes.order_confirmation import confirmation_node
 from Nodes.update_db_node import update_db
 from Nodes.router import router
 from Nodes.confirm_order import order_confirmation
+from Nodes.order_collection_node import order_collection
 
 graph=StateGraph(state_schema)
 
@@ -29,6 +30,7 @@ graph.add_node('new_user',new_user)
 graph.add_node('complete_info',complete_info)
 graph.add_node('update_db',update_db)
 graph.add_node('order_confirmation',order_confirmation)
+graph.add_node('order_collection',order_collection)
 
 
 # Edges of the graph
@@ -36,7 +38,8 @@ graph.add_edge(START,'data_receiver')
 graph.add_conditional_edges('data_receiver',router)
 graph.add_conditional_edges('check_user',conditional_node)
 graph.add_edge('new_user','check_user')
-graph.add_edge('history_loader','check_order_completness')
+graph.add_edge('history_loader','order_collection')
+graph.add_edge('order_collection','check_order_completness')
 graph.add_conditional_edges('check_order_completness',order_info_completion)
 graph.add_edge('complete_info','check_order_completness')
 graph.add_edge('recommendations','select_item')
