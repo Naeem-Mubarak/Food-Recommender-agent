@@ -5,7 +5,7 @@ from config.system_info import model
 
 from models.speech_to_text import voice_transcript_generator
 
-
+# Schema which enforced the LLM to give output according to that
 class order_info(BaseModel):
 
     type_of_food : Annotated[Optional[str],Field(default=None,description='taste of food customer orders spicy or sweet')]
@@ -41,16 +41,16 @@ def english_translator(data):
     return output
 
 
-path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/complete_info.wav"
+# path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/complete_info.wav"
 
 
 
 
 
 
-text=voice_transcript_generator(path)
-data=english_translator(text)
-print(data)
+# text=voice_transcript_generator(path)
+# data=english_translator(text)
+# print(data)
 
 # {'order': None, 'order_info': {'type_of_food': None, 'budget': 0, 'spice_level': 0, 'sugar_level': 0}}
 
