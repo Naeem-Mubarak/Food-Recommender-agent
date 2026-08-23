@@ -18,7 +18,8 @@ Schema fields:
    - Preserve the exact food name.
    - If no order is mentioned then try to feel the emotion of the person and suggest it something 
    - Examples:
-   - (if tone is happy and nothing is ordered) -> (then in order go for something sweet)
+   - (if tone is happy nothing is ordered) -> (then in order go for something sweet)
+   - keywords matching  (user says sweet -> order: sweet)  (user says delecious -> order : sweet)
    - (if tone is feeling weak and want something healthy) -> (then in order go for something healthy)
    - (if he is feeling boring) -> (then in order go for something refreshing)
    - but if there is no tone at all then send None (try to do this most of the time if there is nothing ordered or you didn't find any tone or emotion)
