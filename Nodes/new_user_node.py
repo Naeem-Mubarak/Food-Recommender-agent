@@ -48,8 +48,8 @@ def new_user(state : state_schema):
 
              # interrupting the flow to take user name
             new_user_name = interrupt({
-                    "type" : "New user",
-                    "message" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
+                    "type" : "New_user",
+                    "instruction" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
             })
 
             state['path'] = new_user_name

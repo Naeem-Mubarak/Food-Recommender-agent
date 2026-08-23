@@ -24,7 +24,7 @@ def select_item(state : state_schema):
 
     item = interrupt({
         "type" : 'Select dish',
-        "message" : "Select the dish you want to final"
+        "instruction" : "Select the dish you want to final"
     })
 
     state['path'] = item

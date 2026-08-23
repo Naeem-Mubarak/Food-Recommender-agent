@@ -1,21 +1,44 @@
 from Nodes.state import state_schema
-from pydantic import BaseModel
-from typing import Literal
+from pydantic import BaseModel,Field
+from typing import Literal,Annotated
 from langgraph.types import interrupt
 from config.system_info import model
 from langchain_core.prompts import ChatPromptTemplate
 from models.speech_to_text import voice_transcript_generator
+from langchain_core.output_parsers import StrOutputParser
 
 
 class confirmation_response(BaseModel):
 
-    sign : Literal['confirm','not-confirm']
+    sign : Annotated[
+        Literal['confirm','not-confirm'],
+        Field(default='confirm',description='Either order is final or not')
+    ]
 
 def order_confirmation(state : state_schema):
 
+    item = state['selected_item'] 
+
+    order_prompt = ChatPromptTemplate.from_messages([
+        ('system',"""You are a senior waiter at a restaurant you job is to just confirm the order by narrating the order the customer
+        For example:
+        if you got an order like this {'rest_id': 9, 'restaurant_name': 'Roasters', 'cuisine_type': 'Traditional Spicy Food', 'dish_id': 44, 'dish_name': 'Spicy Roast Chicken', 'spice_level': 4, 'dish_price': 550, 'type_of_food': 'non-veg', 'healthy_rating': 6, 'popularity_score': 5}
+        Then you have to simply summrize this into two lines 
+        Sir do you want to confirm 'Spicy Roaster Chicken from Roasters with the spice level of 4 having price just 550 and it's a non-veg healthy food.
+        """),
+        ('human',"{item}")
+    ])
+
+    parser = StrOutputParser()
+
+    chain = prompt | model | parser
+    message = chain.invoke({
+        'item' : item
+    })
+
     confirmation = interrupt({
         'type' : 'confirmation',
-        'instruction' : 'yes if wants otherwise no'
+        'instruction' : f'{message}'
     })
 
     state['path'] = confirmation
