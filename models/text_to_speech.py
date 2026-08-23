@@ -46,8 +46,8 @@ def text_to_speech(text: str, voice: str = "hannah") -> bytes:
 
 
 # path = text_to_speech(
-#         "Yes confirm this",
-#         output_path="confirmation.wav",
+#         "Hmm ok so select the first one",
+#         output_path="dish_selection.wav",
 #         voice="hannah"
 #     )
 # print(f"Saved to {path}")
