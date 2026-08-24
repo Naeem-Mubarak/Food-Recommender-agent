@@ -1,5 +1,5 @@
 from langgraph.graph import START,END,StateGraph
-from graph.state import state_schema
+from graph.agent_schema import state_schema
 from graph.nodes.voice_receiver_node import reciever_node
 from graph.nodes.Check_user_node import check_user
 from graph.nodes.history_loader_node import history_loader
