@@ -41,16 +41,4 @@ def english_translator(data):
     return output
 
 
-# path = r"/home/naeemmubarak/Desktop/Food Suggestion agent/complete_info.wav"
-
-
-
-
-
-
-# text=voice_transcript_generator(path)
-# data=english_translator(text)
-# print(data)
-
-# {'order': None, 'order_info': {'type_of_food': None, 'budget': 0, 'spice_level': 0, 'sugar_level': 0}}
 
