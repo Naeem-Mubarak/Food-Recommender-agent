@@ -1,4 +1,4 @@
-from graph.state import state_schema
+from graph.agent_schema import state_schema
 from config.system_info import DB_PATH
 from database.db_connection import db_connection
 

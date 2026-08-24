@@ -1,4 +1,4 @@
-from graph.state import state_schema
+from graph.agent_schema import state_schema
 from langgraph.types import interrupt
 from models.speech_to_text import voice_transcript_generator
 from models.data_extractor import english_translator
@@ -12,9 +12,8 @@ def order_collection(state : state_schema):
           'instruction' : "Tell me what kind of eatable you want"
       })
 
-    state['path'] = order_data
-    text = voice_transcript_generator(state['path'])
-    order_info = english_translator(text)
+    state['text'] = order_data
+    order_info = english_translator(state['text'])
 
     
     # state updation

@@ -1,4 +1,4 @@
-from graph.state import state_schema
+from graph.agent_schema import state_schema
 
 def check_completeness_node(state : state_schema):
 

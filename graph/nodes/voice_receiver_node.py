@@ -1,52 +1,26 @@
-from graph.state import state_schema
-from config.system_info import model
-from langchain_core.prompts import ChatPromptTemplate
+from graph.agent_schema import state_schema
 from langgraph.types import interrupt
-from pydantic import BaseModel,Field
-from typing import Annotated
-from models.speech_to_text import voice_transcript_generator
+from schemas.voice_receiver_schema import chain
 
-class id_getter(BaseModel):
-
-    u_id : Annotated[int,Field(default=None,ge=0,description="id of the user")]
-    name : Annotated[str,Field(default=None,description="Name of the user")]
 
 
 def reciever_node(state : state_schema):
 
-    # user_message = interrupt({
-    #     'type' : 'starting point',
-    #     'reason' : 'collecting users data',
-    #     'instruction' : 'Sir please tell your ID and name'
-    # })
+    """
+    Receives the name and ID of the user and then update the state for further processing.
+    """
 
-    user_input = voice_transcript_generator(state['path'])
-    state['voice'] = user_input
+    start = interrupt({
+        'type' : 'Starting agent',
+        'instruction' : "Welcome to our service sir.\n Tell me your name and ID sir."
+    })
 
-    prompt = ChatPromptTemplate.from_messages([
-    ("system",
-            """
-    You extract a user's ID and it's namefrom their message.
-    Rules:
-    1. A valid ID MUST be a number.
-    2. Extract the number regardless of what words surround it.
-    3. If the user mentions the word "ID" but does not provide a number,
-    there is NO valid ID.
-    4. Ignore all non-numeric information.
-    5. Do not interpret words such as "my id", "ID", "identifier", etc.
-    as an ID by themselves.
-    6. If a numeric value exists in the message, return that number as u_id.
-    7. Most important thing is there no number then return None and if there is no name then return None
-    """),
-        ("human", "{user_input}")
-    ])
-
-    structured_llm = model.with_structured_output(id_getter)
-    chain = prompt | structured_llm
+    state['text'] = start
 
     response = chain.invoke({
-        'user_input' : state['voice']
+        'user_input' : state['text']
     })
+
     response = response.model_dump()
     state['user_id'] = response['u_id']
     state['name'] = response['name']
