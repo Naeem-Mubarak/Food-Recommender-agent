@@ -10,7 +10,6 @@ requires-python = ">=3.14"
 dependencies = [
     "fastapi>=0.141.1",
     "groq>=1.6.0",
-    "kokoro>=0.9.4",
     "langchain-google-genai>=4.3.4",
     "langgraph>=1.2.11",
     "langgraph-checkpoint-postgres>=3.1.2",
@@ -31,6 +30,4 @@ requires = ["uv_build>=0.12.5,<0.13.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
-dev = [
-    "ipykernel>=7.3.0",
-]
+dev = []
