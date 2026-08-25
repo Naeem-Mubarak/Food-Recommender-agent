@@ -4,16 +4,34 @@ from graph.schemas.select_item_schema import chain
 
 
 
+
+def format_recommendations(dishes: list[dict]) -> str:
+    """Turns the recommended dish list into a spoken instruction, so the
+    user actually hears what their options are before being asked to pick."""
+    lines = []
+    for i, d in enumerate(dishes, start=1):
+        lines.append(
+            f"Option {i}: {d['dish_name']} from {d['restaurant_name']}, "
+            f"spice level {d['spice_level']} out of five, "
+            f"priced at {d['dish_price']} rupees."
+        )
+    return "Here are your options. " + " ".join(lines) + " Which one would you like?"
+
+
+
+
 def select_item(state : state_schema):
 
     """
     accept user order which is selected from the recommendations provided by the agent and then updates the state
     """
 
+    instruction_text = format_recommendations(state['recommendations'])
+
     # interrputing flow to get the final order from the user
     item = interrupt({
         "type" : 'Select dish',
-        "instruction" : "Select the dish you want to final"
+        "instruction" : instruction_text
     })
 
     state['text'] = item
@@ -29,6 +47,13 @@ def select_item(state : state_schema):
 
     # state updation
     state['selected_item'] = dish
+
+    selected_dish_data = ['restaurant_name' , 'cuisine_type' , 'dish_name' , 'dish_price' , 'type_of_food']
+
+    final_dish = [dish[dish_info] for dish_info in selected_dish_data]
+
+    print(final_dish)
+
 
     return state
 
