@@ -6,10 +6,9 @@ from graph.schemas.new_user_schema import chain
 import random
 
 
-cursor, conn = db_connection(DB_PATH)
-
-
 def id_gen():
+
+    cursor, _ = db_connection(DB_PATH)
 
     # getting all the ids present in db
     li = [row[0] for row in cursor.execute("SELECT cust_id FROM users").fetchall()]
@@ -31,6 +30,7 @@ def new_user(state : state_schema):
 
         while True:
 
+            cursor, conn = db_connection(DB_PATH)
             # interrupting the flow to take user name
             new_user_name = interrupt({
                     "type" : "New_user",
@@ -60,6 +60,7 @@ def new_user(state : state_schema):
 
             )
             conn.commit()
+            conn.close()
 
             # updating state
             state['user_id'] = new_id
