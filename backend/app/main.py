@@ -7,6 +7,7 @@ from config.system_info import DB_URL
 from graph.graph import graph
 from graph.initial_state import initial_state
 
+
 from models.text_to_speech import text_to_speech
 from models.speech_to_text import voice_transcript_generator
 
@@ -56,6 +57,16 @@ async def food_recommendation_agent(websocket : WebSocket):
 
         interrupt_data = result["__interrupt__"][0].value
 
+        interrupt_type = interrupt_data['type']
+
+        if interrupt_type == 'Select dish':
+
+             await websocket.send_json(result['recommendations'])
+
+        elif interrupt_type == 'confirmation':
+
+            await websocket.send_json(result['selected_item'])
+
 
         # agent reply
         agent_response = await text_to_speech(interrupt_data['instruction'])
@@ -73,6 +84,9 @@ async def food_recommendation_agent(websocket : WebSocket):
             Command(resume=text),
             config
         )
+             
+
+             
 
 
 
