@@ -12,4 +12,6 @@ async def text_to_speech(text: str, voice: str = "hannah") -> bytes:
         input=text,
         response_format="wav"
     )
-    return response.read()
+    speech =  await response.read()
+
+    return speech
