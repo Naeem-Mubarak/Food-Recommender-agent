@@ -1,7 +1,7 @@
 import uuid
 from fastapi import FastAPI,WebSocket
 from contextlib import asynccontextmanager
-from langgraph.checkpoint.postgres import PostgresSaver
+from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from langgraph.types import Command
 from config.system_info import DB_URL
 from graph.graph import graph
@@ -19,9 +19,9 @@ agent = None
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global agent
-    # enter the context manager manually and keep it open
-    with PostgresSaver.from_conn_string(DB_URL) as checkpointer:
-        checkpointer.setup()
+    # async context manager + async setup, matching the async checkpointer
+    async with AsyncPostgresSaver.from_conn_string(DB_URL) as checkpointer:
+        await checkpointer.setup()
         agent = graph.compile(checkpointer=checkpointer)
         yield   # server runs here, connection stays open the whole time
     # code after yield runs on shutdown - connection closes cleanly
