@@ -8,10 +8,11 @@ import { useCallback, useRef, useState } from 'react'
 //   - The socket speaks first. The moment it opens, the server
 //     is already running the graph and will push messages with
 //     no message required from the client first.
-//   - For two interrupt types, a JSON text frame arrives BEFORE
+//   - For three interrupt types, a JSON text frame arrives BEFORE
 //     the audio for that turn:
 //       'Select dish'   -> JSON array of recommended dishes
 //       'confirmation'  -> JSON object of the selected dish
+//       'New_user'      -> JSON object { user_id: <int> }
 //     Every other interrupt type sends audio only, no JSON.
 //   - Audio always follows (binary frame, a WAV clip - one
 //     complete file per turn, not a live stream of samples).
@@ -34,6 +35,7 @@ export function useVoiceAgent() {
   const [errorMessage, setErrorMessage] = useState(null)
   const [recommendations, setRecommendations] = useState(null)
   const [selectedItem, setSelectedItem] = useState(null)
+  const [userId, setUserId] = useState(null)
   const [frequencyData, setFrequencyData] = useState(new Uint8Array(BAR_COUNT))
 
   const socketRef = useRef(null)
@@ -122,6 +124,13 @@ export function useVoiceAgent() {
     setStatus('connecting')
     setErrorMessage(null)
 
+    // Create + resume the AudioContext HERE, synchronously, inside the
+    // click handler - this satisfies the browser's autoplay policy.
+    if (!audioContextRef.current) {
+      audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)()
+    }
+    audioContextRef.current.resume()
+
     const socket = new WebSocket(WS_URL)
     socket.binaryType = 'arraybuffer'
     socketRef.current = socket
@@ -132,12 +141,15 @@ export function useVoiceAgent() {
 
     socket.onmessage = async (event) => {
       if (typeof event.data === 'string') {
-        // JSON frame: recommendations (array) or selected item (object)
+        // JSON frame: recommendations (array), selected item (object),
+        // or a new user's id (object with a user_id key)
         try {
           const parsed = JSON.parse(event.data)
           if (Array.isArray(parsed)) {
             setRecommendations(parsed)
             setSelectedItem(null)
+          } else if (parsed.user_id !== undefined) {
+            setUserId(parsed.user_id)
           } else {
             setSelectedItem(parsed)
           }
@@ -246,6 +258,7 @@ export function useVoiceAgent() {
     errorMessage,
     recommendations,
     selectedItem,
+    userId,
     frequencyData,
     connect,
     toggleMic,

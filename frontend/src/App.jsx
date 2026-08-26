@@ -3,6 +3,7 @@ import SiteHeader from './components/SiteHeader'
 import VoiceOrb from './components/VoiceOrb'
 import RecommendationsTable from './components/RecommendationsTable'
 import SelectedItemCard from './components/SelectedItemCard'
+import UserIdBadge from './components/UserIdBadge'
 
 export default function App() {
   const {
@@ -10,6 +11,7 @@ export default function App() {
     errorMessage,
     recommendations,
     selectedItem,
+    userId,
     frequencyData,
     connect,
     toggleMic,
@@ -50,6 +52,8 @@ export default function App() {
 
         {!notStarted && (
           <>
+            <UserIdBadge userId={userId} />
+
             <VoiceOrb
               status={status}
               frequencyData={frequencyData}
@@ -77,7 +81,7 @@ export default function App() {
 
       <footer className="px-6 md:px-10 py-6 text-center">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-cream-400/50">
-          Dastarkhwan · Mood-based ordering
+          Voice-Driven Mood-Based Ordering Agent
         </p>
       </footer>
     </div>

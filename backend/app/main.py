@@ -67,9 +67,15 @@ async def food_recommendation_agent(websocket : WebSocket):
 
             await websocket.send_json(result['selected_item'])
 
+        elif interrupt_type == 'New_user':
+
+             await websocket.send_json({'user_id': interrupt_data['new_id']})
 
         # agent reply
+        print("AGENT WILL SPEAK:", interrupt_data['instruction'])
+
         agent_response = await text_to_speech(interrupt_data['instruction'])
+        # agent_response = await text_to_speech(interrupt_data['instruction'])
 
         # sending agent's reply to the user
         await websocket.send_bytes(agent_response)

@@ -12,7 +12,7 @@ def reciever_node(state : state_schema):
 
     start = interrupt({
         'type' : 'Starting agent',
-        'instruction' : "Welcome to our service sir.\n Tell me your name and ID sir."
+        'instruction' : "[Charming] [Joyful] Hellooo and welcome to our website\n Tell me what can i do for you. "
     })
 
     state['text'] = start
