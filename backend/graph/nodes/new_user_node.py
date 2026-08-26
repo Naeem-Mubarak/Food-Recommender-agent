@@ -6,9 +6,7 @@ from graph.schemas.new_user_schema import chain
 import random
 
 
-def id_gen():
-
-    cursor, _ = db_connection(DB_PATH)
+def id_gen(cursor):
 
     """Deterministic, not random - a replay of this node (which
     re-runs from the top on every resume) computes the SAME id both
@@ -21,49 +19,55 @@ def id_gen():
 
 def new_user(state : state_schema):
 
-        # assigning new id to the new customer because he is not in the db 
-        new_id = id_gen()
+        cursor, conn = db_connection(DB_PATH)
+
+        try:
+            # assigning new id to the new customer because he is not in the db 
+            new_id = id_gen(cursor)
 
 
-        while True:
+            while True:
 
-            cursor, conn = db_connection(DB_PATH)
-            # interrupting the flow to take user name
-            new_user_name = interrupt({
-                    "type" : "New_user",
-                    "instruction" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
-            })
+                
+                # interrupting the flow to take user name
+                new_user_name = interrupt({
+                        "type" : "New_user",
+                        "instruction" : f"Your new_id is {new_id} now tell me your name and remember your name and id after that whenever you have to use our application again you can easily login with your credentials" 
+                })
 
-            state['text'] = new_user_name
-    
-    
-            response = chain.invoke({
-                'text' : state['text']
-            })
-    
-            # converting pydantic model to dict 
-            name = response.model_dump()
-    
-            name = name['name']
-    
-            if name is None:
+                state['text'] = new_user_name
+        
+        
+                response = chain.invoke({
+                    'text' : state['text']
+                })
+        
+                # converting pydantic model to dict 
+                name = response.model_dump()
+        
+                name = name['name']
+        
+                if name is None:
 
-                continue
+                    continue
 
-            # Only inserted when the name is provided
-            cursor.execute(
-                 'INSERT INTO users VALUES (?,?)', 
-                 (new_id , name)
+                # Only inserted when the name is provided
+                cursor.execute(
+                    'INSERT INTO users VALUES (?,?)', 
+                    (new_id , name)
 
-            )
-            conn.commit()
-            conn.close()
+                )
+                conn.commit()
+                conn.close()
 
-            # updating state
-            state['user_id'] = new_id
-            state['name'] = name
+                # updating state
+                state['user_id'] = new_id
+                state['name'] = name
 
-            return state
+                return state
+
+        finally:
+             conn.close()
 
         
 
