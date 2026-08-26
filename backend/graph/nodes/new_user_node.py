@@ -10,15 +10,12 @@ def id_gen():
 
     cursor, _ = db_connection(DB_PATH)
 
-    # getting all the ids present in db
-    li = [row[0] for row in cursor.execute("SELECT cust_id FROM users").fetchall()]
-
-    # generating a unique id which is not present in db
-    while True:
-        id_gen = random.randint(0,100)
-
-        if id_gen not in li:
-             return id_gen
+    """Deterministic, not random - a replay of this node (which
+    re-runs from the top on every resume) computes the SAME id both
+    times, instead of a fresh random number that would mismatch what
+    was already spoken to the user."""
+    row = cursor.execute("SELECT COALESCE(MAX(cust_id), 0) + 1 FROM users").fetchone()
+    return row[0]
 
 
 
