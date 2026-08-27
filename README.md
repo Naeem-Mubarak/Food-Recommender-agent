@@ -51,24 +51,24 @@ A static PNG export of the graph is also available in [`assets/`](assets/).
    on the spot (shown on screen, not just spoken, since numbers are easy
    to mishear).
 2. **Collect the order** — the user describes what they want in their own
-   words ("something spicy, budget around 900"). Missing details (taste,
-   spice level, budget) trigger a follow-up question instead of guessing.
-3. **Recommend** — the agent narrates and displays a short list of dishes,
+   words ("something spicy, budget around 900"). Missing details (order,
+   budget) trigger a follow-up question instead of guessing.
+4. **Recommend** — the agent narrates and displays a short list of dishes,
    filtered against the menu and ranked using the user's past orders.
-4. **Select & confirm** — the user picks a dish by voice, the agent reads
+5. **Select & confirm** — the user picks a dish by voice, the agent reads
    it back for confirmation, and the order is written to the database.
 
 Every pause in that flow (asking for a name, asking for missing order
-details, asking for confirmation) is a LangGraph `interrupt()` — the graph
+details, asking for confirmation) is a LangGraph `interrupt()` (Human in the loop) — the graph
 genuinely pauses mid-execution and resumes exactly where it left off once
 the next voice input arrives, rather than restarting the conversation.
 
 ## Tech stack
 
 **Backend**
-- FastAPI + a single WebSocket endpoint (audio in, audio out, per turn)
+- FastAPI + a single WebSocket(for continous conversation) endpoint (audio in, audio out, per turn)
 - LangGraph for the conversation state machine and human-in-the-loop pauses
-- PostgreSQL (via `AsyncPostgresSaver`) for graph checkpointing
+- PostgreSQL (via `AsyncPostgresSaver`) for graph checkpointing (for agent memory per session)
 - SQLite for restaurant, menu, user, and order data
 - Groq Whisper for speech-to-text, Groq Orpheus for text-to-speech
 - Gemini (via LangChain) for structured extraction and recommendation reasoning
