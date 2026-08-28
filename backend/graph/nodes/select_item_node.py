@@ -23,7 +23,7 @@ def format_recommendations(dishes: list[dict]) -> str:
 def select_item(state : state_schema):
 
     """
-    accept user order which is selected from the recommendations provided by the agent and then updates the state
+    accept user order if there is which is selected from the recommendations provided by the agent and then updates the state otherwise other nodes handle things in loop
     """
 
     instruction_text = format_recommendations(state['recommendations'])
@@ -43,13 +43,15 @@ def select_item(state : state_schema):
 
     # converting pydantic mode to dict so we can extract info easily
     user_response = response.model_dump()
-    dish = user_response['data_of_dish']
+    selected_dish = user_response['dish']
 
     # state updation
     state['selected_item'] = dish
     state['recommendation_satisfaction'] = user_response['liked_recommendation']
 
-    if dish is not None:
+    if selected_dish is not None:
+
+        dish = user_response['data_of_dish']
         selected_dish_data = ['restaurant_name' , 'cuisine_type' , 'dish_name' , 'dish_price' , 'type_of_food']
         
         final_dish = [dish[dish_info] for dish_info in selected_dish_data]
