@@ -29,6 +29,11 @@ const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/agent'
 // how many bars the visualizer renders around the orb
 const BAR_COUNT = 48
 
+// Whisper hallucinates ("please like and subscribe"-style phrases) on
+// very short/near-silent clips. Requiring a minimum press duration
+// filters out accidental taps and cuts down on this significantly.
+const MIN_RECORDING_MS = 600
+
 export function useVoiceAgent() {
   // 'idle' | 'connecting' | 'agent_speaking' | 'listening' | 'processing' | 'waiting_for_user' | 'complete' | 'error'
   const [status, setStatus] = useState('idle')
@@ -46,6 +51,7 @@ export function useVoiceAgent() {
   const mediaRecorderRef = useRef(null)
   const chunksRef = useRef([])
   const micStreamRef = useRef(null)
+  const recordingStartRef = useRef(0)
 
   // pulls frequency bins out of the analyser every animation frame,
   // feeding the visualizer around the orb - this only runs while
@@ -214,6 +220,7 @@ export function useVoiceAgent() {
       recorder.start()
 
       mediaRecorderRef.current = recorder
+      recordingStartRef.current = Date.now()
       setStatus('listening')
     } catch (e) {
       console.error('Microphone access failed:', e)
@@ -226,10 +233,21 @@ export function useVoiceAgent() {
     const recorder = mediaRecorderRef.current
     if (!recorder) return
 
+    const elapsed = Date.now() - recordingStartRef.current
+
     stopVisualizerLoop()
 
     recorder.onstop = async () => {
       micStreamRef.current?.getTracks().forEach((t) => t.stop())
+
+      // guard against near-instant taps - these produce near-silent
+      // clips that Whisper is prone to hallucinating text from
+      if (elapsed < MIN_RECORDING_MS) {
+        setStatus('waiting_for_user')
+        setErrorMessage('Hold the button a little longer while you speak.')
+        return
+      }
+      setErrorMessage(null)
 
       const blob = new Blob(chunksRef.current, { type: 'audio/wav' })
       const buffer = await blob.arrayBuffer()

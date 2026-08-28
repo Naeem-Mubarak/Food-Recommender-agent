@@ -8,22 +8,42 @@ def reciever_node(state : state_schema):
 
     """
     Receives the name and ID of the user and then update the state for further processing.
+    A missing ID is expected and fine for a new user - only a missing
+    name triggers a retry, since name is genuinely required.
     """
 
-    start = interrupt({
-        'type' : 'Starting agent',
-        'instruction' : "[Charming] [Joyful] Hellooo and welcome to our website\n Tell me what can i do for you. "
-    })
+    retry_note = None
 
-    state['text'] = start
+    while True:
 
-    response = chain.invoke({
-        'user_input' : state['text']
-    })
+        instruction = (
+            "[Charming] [Joyful] Hello and welcome to our website. "
+            "Wanna use our service? Tell me your name, and your ID if you already have one."
+        )
+        if retry_note:
+            instruction = (
+                f"I heard '{retry_note}' but couldn't catch your name clearly. "
+                f"Could you please say your name again?"
+            )
 
-    response = response.model_dump()
-    state['user_id'] = response['u_id']
-    state['name'] = response['name']
+        start = interrupt({
+            'type' : 'Starting agent',
+            'instruction' : instruction
+        })
 
-    return state
+        state['text'] = start
 
+        response = chain.invoke({
+            'user_input' : state['text']
+        })
+
+        response = response.model_dump()
+
+        if response['name'] is None:
+            retry_note = state['text']
+            continue
+
+        state['user_id'] = response['u_id']
+        state['name'] = response['name']
+
+        return state

@@ -35,14 +35,15 @@ prompt=ChatPromptTemplate.from_messages([
         3. Their order information
         4. The available menu
 
-        Suggest a maximum of 3 dishes.
+        Suggest a maximum of 2 dishes.
 
         The menu contains:
         rest_id, restaurant_name, cuisine_type, dish_id, dish_name, spice_level,
         dish_price, type_of_food, healthy_rating, popularity_score.
+        Alert : And if user provides you some of the dishes he don't like then you don't have to recommend him those things
         '''),
         ('human',
-        "history of customer: {history} \n customer current requirement order: {order} \n order_info: {order_info} \n if something is None it means not provided by the customer you have to manage that on the basis of previous history menu : {menu}")
+        "history of customer: {history} \n customer current requirement order: {order} \n order_info: {order_info} \n if something is None it means not provided by the customer you have to manage that on the basis of previous history menu : {menu} \n Dishes user don't like : {rejected_dishes}")
     ])
 
 # enforcing schema

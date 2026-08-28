@@ -1,12 +1,17 @@
 from config.system_info import model
 from pydantic import BaseModel,Field
-from typing import Annotated
+from typing import Annotated,Literal
 from langchain_core.prompts import ChatPromptTemplate
 from graph.schemas.recommend_dishes_schema import menu_item
 
 
 
 class dish_name(BaseModel):
+
+    liked_recommendation : Annotated[
+        Literal['yes','no'],
+        Field(default='yes',description='Either user liked that order or not')
+    ]
 
     dish : Annotated[
         str,Field(default=None,description="Dish customer want to eat")
@@ -19,8 +24,11 @@ class dish_name(BaseModel):
 structured_llm=model.with_structured_output(dish_name)
 
 prompt = ChatPromptTemplate.from_messages([
-    ('system',"""You are an intelligent AI agent system extract the dish data(provided by the user) from the menu"""),
-    ('human',"""You have one dish selected by the user and then five other dishes(menu) now you have to fetch the complete reocrd of that dish from menu which is closely related to the dish provided by the user from the menu available \n dish_selected_by_user {item} \n menu: {menu}""")
+    ('system',"""You are an intelligent AI agent system extract the dish data(provided by the user) from the menu or refusal by the user"""),
+    ('human',"""There would be two cases wither user selects a dish from the given menu or either he dislikes them and ask for some other options
+    1. You have one dish selected by the user and then some other dishes(menu) now you have to fetch the complete reocrd of that dish from menu which is closely related to the dish provided by the user from the menu available \n menu: {menu}
+    2. if user says anything like 'recommend me something else', 'i don't like these things', 'do you have some other options then', 'show me some other items' then in the dish you have to pass None and in liked_recommendation you have to pass no
+    \n user_response {item}""")
 ])
 
 chain = prompt | structured_llm

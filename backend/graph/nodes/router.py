@@ -6,10 +6,12 @@ from typing import Literal
 def router(state : state_schema) -> Literal['data_receiver','check_user']:
 
     """
-    Ensuring move to the check user if both fields are provided if even one of these is missing then enter info again
+    A new user genuinely has no ID to give - only a missing name means
+    we need to ask again. check_user already handles a None user_id
+    correctly (no match found -> routed to new_user).
     """
 
-    if state['user_id'] is None or state['name'] is None:
+    if state['name'] is None:
 
         return 'data_receiver'
     else:

@@ -6,7 +6,7 @@ from graph.schemas.recommend_dishes_schema import chain
 
 def recommendation(state: state_schema):
 
-    """Recommend 3 dishes on the basis of past data of the user (if exist) and current order requirements and then update the state for further processing"""
+    """Recommend 2 dishes on the basis of past data of the user (if exist) and current order requirements and then update the state for further processing"""
 
     # loading menu
     menu=menu_loader()
@@ -15,6 +15,7 @@ def recommendation(state: state_schema):
         'history':state['history'],
         'order':state['order'],
         'order_info' : state['order_info'],
+        'rejected_dishes' : state['rejected_recommendations'],
         'menu': menu
     })
 
@@ -22,6 +23,7 @@ def recommendation(state: state_schema):
 
     # state updation
     state['recommendations'] = dishes['recommendations']
+    state['iteration'] = state['iteration'] + 1
 
     # data user can see for each 
     select_data = ['restaurant_name','cuisine_type','dish_name','spice_level','dish_price','type_of_food','healthy_rating']

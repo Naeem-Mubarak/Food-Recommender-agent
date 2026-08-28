@@ -1,5 +1,6 @@
 from typing import TypedDict,Optional,List,Literal,Annotated,Any
 from pydantic import Field
+import operator
 
 
 # state the agent which will get updated throughout the flow 
@@ -28,13 +29,33 @@ class state_schema(TypedDict):
         Field(description='Evaluate wether the order information is complete or not')
         ]]
 
-    recommendations : Optional[List[dict]]
+    # Items suggested by agent
+    recommendations : Annotated[
+        Optional[List[dict]],
+        Field(default=None)
+    ]
+
+    iteration : int
+
+    recommendation_satisfaction : Optional[Annotated[
+            Literal['yes','no'],
+            Field(description='Is user satisfy with the recommendation')
+        ]]
+
+    rejected_recommendations : Annotated[
+        Optional[List[dict]],
+        operator.add
+    ]
 
     selected_item : Optional[dict[Any,Any]]
+
 
     confirm_order : Optional[Annotated[
         Literal['confirm','not-confirm'],
         Field(description="Either order is confirm or not")
     ]]
+
+    iteration : int
+
 
 

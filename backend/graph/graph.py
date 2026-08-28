@@ -15,6 +15,9 @@ from graph.nodes.update_db_node import update_db
 from graph.nodes.router import router
 from graph.nodes.confirm_order import order_confirmation
 from graph.nodes.order_collection_node import order_collection
+from graph.nodes.liked_recommendation_router import liked_or_disliked_recommendation_router
+from graph.nodes.add_rejected_items_node import add_rejected_items
+
 
 graph=StateGraph(state_schema)
 
@@ -31,6 +34,8 @@ graph.add_node('complete_info',complete_info)
 graph.add_node('update_db',update_db)
 graph.add_node('order_confirmation',order_confirmation)
 graph.add_node('order_collection',order_collection)
+graph.add_node('Rejected',add_rejected_items)
+
 
 
 # Edges of the graph
@@ -43,7 +48,8 @@ graph.add_edge('order_collection','check_order_completness')
 graph.add_conditional_edges('check_order_completness',order_info_completion)
 graph.add_edge('complete_info','check_order_completness')
 graph.add_edge('recommendations','select_item')
-graph.add_edge('select_item', 'order_confirmation')
+graph.add_conditional_edges('select_item',liked_or_disliked_recommendation_router)
+graph.add_edge('Rejected', 'recommendations')
 graph.add_conditional_edges('order_confirmation',confirmation_node)
 graph.add_edge('update_db',END)
 
