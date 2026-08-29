@@ -14,11 +14,17 @@ class dish_name(BaseModel):
 
     liked_recommendation : Annotated[
         Literal['yes','no'],
-        Field(default='yes',description='Either user liked that order or not')
+        Field(default='yes',
+              description=("Set to 'yes' when the user selects or accepts a recommended dish. "
+                "Set to 'no' when the user rejects the recommendations or asks for alternatives.")
+            )
     ]
 
     dish : Annotated[
-        str,Field(default=None,description="Dish customer want to eat")
+        str,Field(
+                  description=("The name of the dish selected by the user. "
+                "Must be None when liked_recommendation is 'no' or he will tell you the number from the recommendation.")
+                )
     ]
 
     data_of_dish : menu_item
@@ -28,11 +34,81 @@ class dish_name(BaseModel):
 structured_llm=model.with_structured_output(dish_name)
 
 prompt = ChatPromptTemplate.from_messages([
-    ('system',"""You are an intelligent AI agent system extract the dish data(provided by the user) from the menu or refusal by the user"""),
-    ('human',"""There would be two cases wither user selects a dish from the given menu or either he dislikes them and ask for some other options
-    1. You have one dish selected by the user and then some other dishes(menu) now you have to fetch the complete reocrd of that dish from menu which is closely related to the dish provided by the user from the menu available \n menu: {menu}
-    2. if user says anything like 'recommend me something else', 'i don't like these things', 'do you have some other options then', 'show me some other items' then in the dish you have to pass None and in liked_recommendation you have to pass no because user didn't selected anything
-    \n user_response {item}""")
+    (
+        "system",
+        """
+You are a food-ordering assistant responsible for interpreting the user's response
+to a list of recommended dishes.
+
+Your task is to determine whether the user selected/accepted a dish or rejected
+the recommendations and wants other options.
+
+You MUST follow these rules:
+
+1. SELECTION / ACCEPTANCE
+If the user selects, accepts, or clearly expresses a desire for one of the dishes
+in the provided menu or he says i want 1st one or 2nd one then you have to check out from the recommendations that which one is first one and which one it second one:
+- liked_recommendation = "yes"
+- dish = the name of the selected dish
+- data_of_dish = the complete matching record from the provided menu
+
+2. REJECTION / ALTERNATIVE REQUEST
+If the user rejects the recommendations, dislikes them, or asks for different
+options, such as:
+- "recommend something else"
+- "I don't like these"
+- "show me other options"
+- "give me something different"
+- "none of these"
+- "do you have anything else?"
+then:
+- liked_recommendation = "no"
+- dish = None
+- data_of_dish = None
+
+3. MENU-ONLY MATCHING
+When the user selects a dish, data_of_dish MUST come from the provided menu.
+Never invent, modify, or fabricate a menu record.
+
+4. NATURAL LANGUAGE
+Understand natural variations of dish names. For example, if the menu contains
+"Spicy Chicken Burger" and the user says "I'll take the spicy chicken burger",
+treat it as a selection.
+
+5. AMBIGUITY
+If the user's response does not clearly select a dish and does not clearly reject
+the recommendations, do not invent a selection. Prefer:
+- liked_recommendation = "no"
+- dish = None
+- data_of_dish = None
+
+6. CONSISTENCY
+If liked_recommendation = "yes":
+    dish MUST NOT be None
+    data_of_dish MUST NOT be None
+
+If liked_recommendation = "no":
+    dish MUST be None
+    data_of_dish MUST be None.
+"""
+    ),
+    (
+        "human",
+        """
+Here is the menu:
+
+{menu}
+
+Here is the user's response:
+
+{item}
+
+Determine whether the user selected one of the recommended dishes or rejected
+the recommendations.
+
+Return the structured result according to the rules above.
+"""
+    )
 ])
 
 chain = prompt | structured_llm
