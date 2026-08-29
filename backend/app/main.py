@@ -75,15 +75,12 @@ async def food_recommendation_agent(websocket : WebSocket):
         print("AGENT WILL SPEAK:", interrupt_data['instruction'])
 
         agent_response = await text_to_speech(interrupt_data['instruction'])
-        # agent_response = await text_to_speech(interrupt_data['instruction'])
 
         # sending agent's reply to the user
         await websocket.send_bytes(agent_response)
 
-        # receiving user's response
-        voice = await websocket.receive_bytes()
-        # converting user's voice to text
-        text = await voice_transcript_generator(voice)
+        
+        text = await websocket.receive_text()
 
         # resuming workflow after getting user response
         result = await agent.ainvoke(
