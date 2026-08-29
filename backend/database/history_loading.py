@@ -2,10 +2,9 @@ from config.system_info import DB_PATH
 from database.db_connection import db_connection
 
 
-cursor, conn =db_connection(DB_PATH)
-
-
 def found_customer_data(user_id : int):
+
+    cursor, conn =db_connection(DB_PATH)
 
     cursor.execute("SELECT * FROM users WHERE cust_id=?",(user_id,))
     data=cursor.fetchone()
