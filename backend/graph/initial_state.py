@@ -15,6 +15,9 @@ def initial_state() -> state_schema:
         'history': None,
         'order_eval': None,
         'recommendations': None,
+        'iteration': None,
+        'recommendation_satisfaction': None,
+        'rejected_recommendations': None,
         'selected_item': None,
         'confirm_order': None
     }
