@@ -46,7 +46,7 @@ def select_item(state : state_schema):
     selected_dish = user_response['dish']
 
     # state updation
-    state['selected_item'] = dish
+    state['selected_item'] = selected_dish
     state['recommendation_satisfaction'] = user_response['liked_recommendation']
 
     if selected_dish is not None:

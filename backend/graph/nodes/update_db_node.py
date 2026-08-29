@@ -2,8 +2,7 @@ from graph.agent_schema import state_schema
 from config.system_info import DB_PATH
 from database.db_connection import db_connection
 
-# db connection
-cursor, conn = db_connection(DB_PATH)
+
 
 
 def update_db(state : state_schema):
@@ -11,6 +10,10 @@ def update_db(state : state_schema):
     """
     adding the final order of the user to his history so for next time agent can recommend him according to his history 
     """
+
+    # db connection
+    cursor, conn = db_connection(DB_PATH)
+    
     item = state['selected_item']
 
     order = [state['user_id'],item['rest_id'],item['dish_id'],item['dish_name'],item['spice_level'],item['dish_price'],item['type_of_food'],item['healthy_rating']]
