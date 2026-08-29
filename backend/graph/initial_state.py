@@ -12,12 +12,12 @@ def initial_state() -> state_schema:
         'evaluator': None,
         'order': None,
         'order_info': None,
-        'history': None,
+        'history': [],
         'order_eval': None,
-        'recommendations': None,
-        'iteration': None,
+        'recommendations': [],
+        'iteration': 0,
         'recommendation_satisfaction': None,
-        'rejected_recommendations': None,
-        'selected_item': None,
+        'rejected_recommendations': [],
+        'selected_item': {},
         'confirm_order': None
     }

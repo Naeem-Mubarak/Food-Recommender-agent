@@ -31,7 +31,7 @@ class state_schema(TypedDict):
 
     # Items suggested by agent
     recommendations : Annotated[
-        Optional[List[dict]],
+        List[dict],
         Field(default=None)
     ]
 
@@ -43,11 +43,11 @@ class state_schema(TypedDict):
         ]]
 
     rejected_recommendations : Annotated[
-        Optional[List[dict]],
+        List[dict],
         operator.add
     ]
 
-    selected_item : Optional[dict[Any,Any]]
+    selected_item : dict[Any,Any]
 
 
     confirm_order : Optional[Annotated[
