@@ -43,20 +43,23 @@ def select_item(state : state_schema):
 
     # converting pydantic mode to dict so we can extract info easily
     user_response = response.model_dump()
-    selected_dish = user_response['dish']
 
-    # state updation
-    state['selected_item'] = selected_dish
+    
     state['recommendation_satisfaction'] = user_response['liked_recommendation']
 
-    if selected_dish is not None:
+    if user_response['liked_recommendation'] == 'yes':
 
         dish = user_response['data_of_dish']
+        state['selected_item'] = dish
+
         selected_dish_data = ['restaurant_name' , 'cuisine_type' , 'dish_name' , 'dish_price' , 'type_of_food']
         
         final_dish = [dish[dish_info] for dish_info in selected_dish_data]
         
         print(final_dish)
+    
+    else:
+        state['selected_item'] = None
 
 
     return state

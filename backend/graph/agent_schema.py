@@ -44,7 +44,7 @@ class state_schema(TypedDict):
 
     rejected_recommendations : Annotated[
         List[dict],
-        operator.add
+        Field(description="The dishes user didn't like")
     ]
 
     selected_item : dict[Any,Any]
