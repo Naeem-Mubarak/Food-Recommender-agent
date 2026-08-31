@@ -1,8 +1,11 @@
 from pydantic import BaseModel,Field
 from typing import Literal,Annotated
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+
+
+model = Gemini_model_provider()
 
 
 class confirmation_response(BaseModel):

@@ -1,7 +1,9 @@
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from pydantic import BaseModel,Field
 from typing import Annotated,Optional,List
 from langchain_core.prompts import ChatPromptTemplate
+
+model = Gemini_model_provider()
 
 
 # defining schema so llm can fetch exactly this data from the history

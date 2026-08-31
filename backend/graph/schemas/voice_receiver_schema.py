@@ -1,8 +1,10 @@
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel,Field
 from typing import Annotated
 
+
+model = Gemini_model_provider()
 
 class id_getter(BaseModel):
 

@@ -1,6 +1,6 @@
 from pydantic import BaseModel,Field
 from typing import Optional,Annotated
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from langchain_core.prompts import ChatPromptTemplate
 
 
@@ -34,6 +34,8 @@ prompt = ChatPromptTemplate.from_messages([
 
         ('human', "{order_data}")
     ])
+
+model = Gemini_model_provider()
 
 # forcing schema
 structured_llm = model.with_structured_output(order_schema)

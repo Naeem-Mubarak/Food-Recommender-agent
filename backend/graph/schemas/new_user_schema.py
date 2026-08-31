@@ -1,7 +1,9 @@
 from langchain_core.prompts import ChatPromptTemplate
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from pydantic import BaseModel,Field
 from typing import Optional,Annotated
+
+model = Gemini_model_provider()
 
 
 class name_schema(BaseModel):

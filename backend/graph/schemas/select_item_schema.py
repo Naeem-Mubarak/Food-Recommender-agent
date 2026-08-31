@@ -1,10 +1,10 @@
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 from pydantic import BaseModel,Field
 from typing import Annotated,Literal
 from langchain_core.prompts import ChatPromptTemplate
 from graph.schemas.recommend_dishes_schema import menu_item
 
-
+model = Gemini_model_provider()
 
 class dish_name(BaseModel):
 
@@ -55,6 +55,7 @@ in the provided menu or he says i want 1st one or 2nd one then you have to check
 2. REJECTION / ALTERNATIVE REQUEST
 If the user rejects the recommendations, dislikes them, or asks for different
 options, such as:
+- "Suggest me something else"
 - "recommend something else"
 - "I don't like these"
 - "show me other options"

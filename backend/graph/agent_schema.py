@@ -1,6 +1,5 @@
 from typing import TypedDict,Optional,List,Literal,Annotated,Any
 from pydantic import Field
-import operator
 
 
 # state the agent which will get updated throughout the flow 
