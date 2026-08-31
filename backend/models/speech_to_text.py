@@ -1,7 +1,9 @@
-from config.system_info import groq_client
+from config.system_info import Groq_client_provider
 from config.prompts import voice_llm_prompt
 from io import BytesIO
 
+
+groq_client= Groq_client_provider()
 
 async def voice_transcript_generator(voice : bytes):
 

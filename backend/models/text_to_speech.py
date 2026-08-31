@@ -1,6 +1,7 @@
-from config.system_info import groq_client
+from config.system_info import Groq_client_provider
 
 
+groq_client = Groq_client_provider()
 
 async def text_to_speech(text: str, voice: str = "hannah") -> bytes:
     """

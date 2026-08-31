@@ -4,7 +4,7 @@ from database.db_connection import db_connection
 
 def found_customer_data(user_id : int):
 
-    cursor, conn =db_connection(DB_PATH)
+    cursor, _ =db_connection(DB_PATH)
 
     cursor.execute("SELECT * FROM users WHERE cust_id=?",(user_id,))
     data=cursor.fetchone()

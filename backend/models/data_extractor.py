@@ -1,8 +1,10 @@
 from config.prompts import translator_llm_prompt
 from pydantic import BaseModel,Field
 from typing import Annotated,Optional
-from config.system_info import model
+from config.system_info import Gemini_model_provider
 
+
+model = Gemini_model_provider()
 
 
 # Schema which enforced the LLM to give output according to that
