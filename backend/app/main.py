@@ -3,7 +3,7 @@ from fastapi import FastAPI,WebSocket
 from contextlib import asynccontextmanager
 from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from langgraph.types import Command
-from config.system_info import DB_URL
+from config.system_info import DB_connection_provider
 from graph.graph import graph
 from graph.initial_state import initial_state
 
@@ -12,7 +12,7 @@ from models.text_to_speech import text_to_speech
 from models.speech_to_text import voice_transcript_generator
 
 
-
+DB_URL = DB_connection_provider()
 agent = None
 
 
@@ -80,7 +80,20 @@ async def food_recommendation_agent(websocket : WebSocket):
         await websocket.send_bytes(agent_response)
 
         
-        text = await websocket.receive_text()
+        message = await websocket.receive()
+
+        if "bytes" in message:
+
+            voice = message["bytes"]
+            text = await voice_transcript_generator(voice)
+        
+        elif "text" in message:
+
+            text = message['text']
+
+        else:
+            
+            continue
 
         # resuming workflow after getting user response
         result = await agent.ainvoke(
