@@ -1,6 +1,6 @@
 # Voice-Driven Mood-Based Ordering Agent
 
-A voice-first agent that recommends food based on mood, budget, and order
+A voice-first(test as optional) agent that recommends food based on mood, budget, and order
 history — not a search box, a conversation.
 
 ## Architecture
