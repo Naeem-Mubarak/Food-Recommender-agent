@@ -11,7 +11,7 @@ def found_customer_data(user_id : int):
     if data:
         cursor.execute("""
             SELECT 
-            r.name,u.name,u.spice,u.price,u.type_of_food,u.healthy_rating
+            r.name,u.name,u.spice,u.sweet,u.price,u.type_of_food,u.healthy_rating
             FROM user_data AS u
             INNER JOIN restaurants AS r
             ON u.rest_id = r.branch_id
@@ -22,6 +22,12 @@ def found_customer_data(user_id : int):
         return customer_history
 
     return []
+
+
+
+d = found_customer_data(4)
+
+print(d)
 
     
 
