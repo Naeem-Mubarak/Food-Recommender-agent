@@ -26,7 +26,7 @@ def recommendation(state: state_schema):
     state['iteration'] = state['iteration'] + 1
 
     # data user can see for each 
-    select_data = ['restaurant_name','cuisine_type','dish_name','spice_level','dish_price','type_of_food','healthy_rating']
+    select_data = ['restaurant_name','cuisine_type','dish_name','spice_level','sweet_level','dish_price','type_of_food','healthy_rating']
 
     filtered_dishes=[
     {k: item[k] for k in select_data if k in item}

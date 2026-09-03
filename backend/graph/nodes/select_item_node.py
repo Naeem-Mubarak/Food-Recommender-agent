@@ -10,9 +10,17 @@ def format_recommendations(dishes: list[dict]) -> str:
     user actually hears what their options are before being asked to pick."""
     lines = []
     for i, d in enumerate(dishes, start=1):
+        spice = d['spice_level']
+        sweet = d['sweet_level']
+        max_level = max(spice,sweet)
+
+        if max_level == spice:
+            taste_info = f"spice level {spice} out of five"
+        else:
+            taste_info = f"Sweet level {sweet} out of five"
         lines.append(
             f"Option {i}: {d['dish_name']} from {d['restaurant_name']}, "
-            f"spice level {d['spice_level']} out of five, "
+            f"{taste_info}"
             f"priced at {d['dish_price']} rupees."
         )
     return "Here are your options. " + " ".join(lines) + " Which one would you like?"

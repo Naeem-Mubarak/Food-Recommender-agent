@@ -1,6 +1,5 @@
 from graph.agent_schema import state_schema
 from database.history_loading import found_customer_data
-from graph.schemas.history_loader_schema import chain
 
 
 
@@ -12,11 +11,10 @@ def history_loader(state: state_schema):
     # history of the current user
     data=found_customer_data(state['user_id'])
 
-    response = chain.invoke({
-        'data':data
-    })
+    cols = ['restaurant_name', 'dish_name', 'spice_level', 'sweet_level' , 'price', 'type_of_food', 'healthy_rating']
+    order_history = [dict(zip(cols,row)) for row in data]
 
     # state updation
-    state['history']=response.model_dump()
+    state['history']=order_history
 
     return state

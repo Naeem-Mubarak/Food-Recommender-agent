@@ -3,15 +3,23 @@ from langgraph.types import interrupt
 from graph.schemas.confirm_order_schema import chain1,chain2
 
 
+def format_order(item: dict) -> str:
+
+    """Formatting the order so agent can ask user for confirmation"""
+
+    return (
+        f"Do you want to confirm {item['dish_name']} from {item['restaurant_name']}, "
+        f"spice level {item['spice_level']} out of five, priced at {item['dish_price']} rupees?"
+    )
+
+
 def order_confirmation(state : state_schema):
 
     """Extracting selected item from the user and then update the state and then asking user for the confirmation and update the state for further process"""
 
     item = state['selected_item'] 
 
-    message = chain1.invoke({
-        'item' : item
-    })
+    message = format_order(item)
 
     confirmation = interrupt({
         'type' : 'confirmation',
