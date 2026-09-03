@@ -23,14 +23,3 @@ def found_customer_data(user_id : int):
 
     return []
 
-
-
-d = found_customer_data(4)
-
-print(d)
-
-    
-
-
-
-
