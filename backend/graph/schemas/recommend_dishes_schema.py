@@ -14,6 +14,7 @@ class menu_item(TypedDict):
     dish_id : int
     dish_name : str
     spice_level : int
+    sweet_level : int
     dish_price : int
     type_of_food : str
     healthy_rating : int
@@ -42,7 +43,7 @@ prompt=ChatPromptTemplate.from_messages([
         Suggest a maximum of 2 dishes.
 
         The menu contains:
-        rest_id, restaurant_name, cuisine_type, dish_id, dish_name, spice_level,
+        rest_id, restaurant_name, cuisine_type, dish_id, dish_name, spice_level, sweet_level,
         dish_price, type_of_food, healthy_rating, popularity_score.
         Alert : And if user provides you some of the dishes he don't like then you don't have to recommend him those things
         '''),
