@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS dishes (
     restaurant_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     spice INTEGER NOT NULL CHECK(spice BETWEEN 1 AND 5),
+    sweet_level INTEGER NOT NULL DEFAULT 0 CHECK(sweet_level BETWEEN 0 AND 5),
     price INTEGER NOT NULL,
     type_of_food TEXT NOT NULL,
     healthy_rating INTEGER NOT NULL,
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS user_data(
     dish_id INTEGER,
     name TEXT NOT NULL,
     spice INTEGER,
+    sweet INTEGER,
     price INTEGER,
     type_of_food TEXT,
     healthy_rating INTEGER,
@@ -48,14 +50,7 @@ CREATE TABLE IF NOT EXISTS user_data(
 );
 """)
 
-
-# cursor.executemany("INSERT INTO restaurants VALUES (?, ?, ?)", restaurants)
-# cursor.executemany("INSERT INTO dishes VALUES (?, ?, ?, ?, ?, ?, ?, ?)", dishes)
-# cursor.executemany("INSERT INTO users VALUES (?, ?)", users)
-# cursor.executemany(
-#     "INSERT INTO user_data (user_id, rest_id, dish_id, name, spice, price, type_of_food, healthy_rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-#     orders
-# )
+print("Table created successfully")
 
 conn.commit()
 conn.close()
