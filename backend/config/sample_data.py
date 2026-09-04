@@ -1,86 +1,113 @@
-dishes = [
-    (1, 1, "Chicken Karahi", 4, 550, "non-veg", 7, 4.5),
-    (2, 1, "Chapli Kebab", 3, 400, "non-veg", 6, 4.2),
-    (3, 1, "Daal Chawal", 1, 250, "veg", 7, 4.0),
-    (4, 1, "Seekh Kebab", 3, 380, "non-veg", 6, 4.1),
-    (5, 1, "Mutton Pulao", 3, 600, "non-veg", 6, 4.3),
-    (6, 2, "Kung Pao Chicken", 4, 600, "non-veg", 7, 4.3),
-    (7, 2, "Veg Fried Rice", 1, 350, "veg", 7, 3.9),
-    (8, 2, "Chili Garlic Noodles", 5, 450, "veg", 5, 4.6),
-    (9, 2, "Manchurian", 3, 420, "veg", 5, 4.2),
-    (10, 2, "Sweet and Sour Chicken", 2, 550, "non-veg", 6, 4.0),
-    (11, 3, "Margherita Pizza", 1, 700, "veg", 4, 4.4),
-    (12, 3, "Pepperoni Pizza", 3, 850, "non-veg", 3, 4.1),
-    (13, 3, "Pasta Alfredo", 1, 650, "veg", 4, 4.0),
-    (14, 3, "Spicy Arrabiata Pasta", 4, 600, "veg", 5, 4.2),
-    (15, 3, "Garlic Bread", 1, 250, "veg", 3, 4.3),
-    (16, 4, "Zinger Burger", 3, 500, "non-veg", 3, 4.7),
-    (17, 4, "Broast (2pc)", 2, 450, "non-veg", 3, 4.5),
-    (18, 4, "French Fries", 1, 200, "veg", 2, 4.2),
-    (19, 4, "Chicken Wrap", 2, 400, "non-veg", 4, 4.1),
-    (20, 4, "Loaded Fries", 3, 350, "non-veg", 2, 4.4),
-    (21, 5, "Zinger Burger", 3, 550, "non-veg", 3, 4.6),
-    (22, 5, "Hot Wings", 4, 450, "non-veg", 3, 4.5),
-    (23, 5, "Krunch Burger", 3, 500, "non-veg", 3, 4.3),
-    (24, 5, "Popcorn Chicken", 3, 400, "non-veg", 3, 4.4),
-    (25, 5, "Twister", 2, 480, "non-veg", 4, 4.2),
-    (26, 6, "Nihari", 4, 450, "non-veg", 6, 4.5),
-    (27, 6, "Haleem", 3, 400, "non-veg", 6, 4.6),
-    (28, 6, "Biryani", 4, 350, "non-veg", 6, 4.7),
-    (29, 6, "Palak Paneer", 2, 300, "veg", 8, 4.1),
-    (30, 6, "Chana Chaat", 2, 200, "veg", 8, 4.0),
-    (31, 7, "Cheese Burger", 2, 450, "non-veg", 3, 4.2),
-    (32, 7, "Club Sandwich", 2, 350, "veg", 5, 4.0),
-    (33, 7, "Loaded Nachos", 3, 400, "veg", 3, 4.3),
-    (34, 7, "Fried Chicken", 4, 500, "non-veg", 3, 4.4),
-    (35, 7, "Milkshake Combo", 1, 550, "veg", 4, 4.5),
-    (36, 8, "Protein Shake", 1, 350, "veg", 9, 4.3),
-    (37, 8, "Fruit Smoothie", 1, 300, "veg", 9, 4.5),
-    (38, 8, "Oats Bowl", 1, 250, "veg", 9, 4.2),
-    (39, 8, "Grilled Chicken Salad", 2, 450, "non-veg", 9, 4.6),
-    (40, 8, "Green Detox Juice", 1, 280, "veg", 10, 4.1),
-    (41, 9, "Peshawari Karahi", 5, 600, "non-veg", 6, 4.7),
-    (42, 9, "Spicy Tikka Boti", 4, 500, "non-veg", 6, 4.5),
-    (43, 9, "Bhindi Masala", 3, 300, "veg", 7, 4.0),
-    (44, 9, "Spicy Roast Chicken", 4, 550, "non-veg", 6, 4.6),
-    (45, 9, "Masala Fish", 4, 500, "non-veg", 6, 4.3),
-    (46, 10, "Gulab Jamun", 1, 200, "veg", 3, 4.6),
-    (47, 10, "Ras Malai", 1, 250, "veg", 3, 4.5),
-    (48, 10, "Kheer", 1, 220, "veg", 4, 4.3),
-    (49, 10, "Chocolate Cake", 1, 400, "veg", 2, 4.7),
-    (50, 10, "Ice Cream Sundae", 1, 350, "veg", 2, 4.8),
-]
+from database.db_connection import db_connection
+from config.system_info import DB_PATH
 
 
-
-restaurants = [
-    (1, "Spice Villa", "Pakistani"),
-    (2, "Golden Dragon", "Chinese"),
-    (3, "Pizza Point", "Italian"),
-    (4, "Karachi Broast", "Fast Food"),
-    (5, "KFC", "Fast Food"),
-    (6, "Food Masala", "Desi Food"),
-    (7, "Yumms", "Fast Food"),
-    (8, "Health is Wealth", "Healthy Milk Shakes"),
-    (9, "Roasters", "Traditional Spicy Food"),
-    (10,"Candy land", "Sweet Dishes")
-]
+cursor , conn =db_connection(DB_PATH)
 
 
-users=[
-    (2, 'Naeem'),
-    (4, 'Sameer')
-]
+cursor.executescript("""
+INSERT INTO restaurants (branch_id, name, cuisine_type) VALUES
+(1, 'Spice Avenue', 'Pakistani'),
+(2, 'Urban Bites', 'Fast Food'),
+(3, 'Karachi Grill', 'BBQ'),
+(4, 'Green Bowl', 'Healthy'),
+(5, 'Pasta House', 'Italian'),
+(6, 'Tokyo Kitchen', 'Japanese'),
+(7, 'Texas Steakhouse', 'American'),
+(8, 'Mediterranean Table', 'Mediterranean'),
+(9, 'Mexican Fiesta', 'Mexican'),
+(10, 'Sweet Corner', 'Desserts');
 
-orders = [
-    (2, 1, 1, 'Chicken Karahi', 4, 550, 'non-veg', 7),
-    (2, 1, 2, 'Chapli Kebab', 3, 400, 'non-veg', 6),
-    (2, 2, 6, 'Kung Pao Chicken', 4, 600, 'non-veg', 7),
-    (2, 2, 9, 'Manchurian', 3, 420, 'veg', 5),
-    (2, 4, 16, 'Zinger Burger', 3, 500, 'non-veg', 3),
-    (4, 1, 3, 'Daal Chawal', 1, 250, 'veg', 7),
-    (4, 3, 11, 'Margherita Pizza', 1, 700, 'veg', 4),
-    (4, 6, 26, 'Nihari', 4, 450, 'non-veg', 6),
-    (4, 8, 36, 'Protein Shake', 1, 350, 'veg', 9),
-    (4, 10, 46, 'Gulab Jamun', 1, 200, 'veg', 3),
-]
+
+INSERT INTO dishes
+(dish_id, restaurant_id, name, spice, sweet_level, price, type_of_food, healthy_rating, popularity_score)
+VALUES
+(1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6, 9.5),
+(2, 1, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5, 9.2),
+(3, 1, 'Chicken Handi', 3, 0, 750, 'Non-Veg', 6, 8.7),
+(4, 2, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4, 9.6),
+(5, 2, 'Chicken Pizza', 2, 0, 700, 'Non-Veg', 5, 8.9),
+(6, 2, 'Loaded Fries', 2, 0, 400, 'Veg', 3, 8.5),
+(7, 3, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7, 9.0),
+(8, 3, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8, 9.4),
+(9, 3, 'Beef Bihari Kabab', 5, 0, 750, 'Non-Veg', 6, 8.8),
+(10, 4, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10, 8.8),
+(11, 4, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9, 9.1),
+(12, 4, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10, 8.4),
+(13, 4, 'Quinoa Vegetable Bowl', 1, 0, 600, 'Veg', 10, 8.6),
+(14, 4, 'Grilled Fish Salad', 1, 0, 750, 'Non-Veg', 10, 9.0),
+(15, 4, 'Avocado Chickpea Salad', 1, 0, 550, 'Veg', 10, 8.5),
+(16, 5, 'Chicken Alfredo', 2, 0, 850, 'Non-Veg', 6, 9.3),
+(17, 5, 'Arrabbiata Pasta', 4, 0, 750, 'Veg', 7, 8.6),
+(18, 5, 'Margherita Pizza', 1, 0, 650, 'Veg', 7, 8.8),
+(19, 6, 'Chicken Teriyaki', 1, 2, 750, 'Non-Veg', 7, 9.0),
+(20, 6, 'Chicken Ramen', 3, 0, 800, 'Non-Veg', 7, 9.2),
+(21, 6, 'Vegetable Sushi', 1, 0, 650, 'Veg', 9, 8.7),
+(22, 7, 'Grilled Beef Steak', 2, 0, 1400, 'Non-Veg', 7, 9.5),
+(23, 7, 'Grilled Chicken', 1, 0, 850, 'Non-Veg', 9, 9.0),
+(24, 7, 'Beef Burger', 2, 0, 700, 'Non-Veg', 5, 9.1),
+(25, 8, 'Chicken Shawarma', 2, 0, 500, 'Non-Veg', 8, 9.3),
+(26, 8, 'Falafel Plate', 1, 0, 450, 'Veg', 9, 8.8),
+(27, 8, 'Hummus with Pita', 1, 0, 400, 'Veg', 9, 8.5),
+(28, 9, 'Chicken Tacos', 4, 0, 600, 'Non-Veg', 7, 9.2),
+(29, 9, 'Beef Burrito', 3, 0, 700, 'Non-Veg', 6, 8.9),
+(30, 9, 'Mexican Rice Bowl', 3, 0, 550, 'Veg', 8, 8.7),
+(31, 9, 'Grilled Chicken Fajita Bowl', 2, 0, 650, 'Non-Veg', 9, 8.9),
+(32, 9, 'Black Bean Salad', 2, 0, 450, 'Veg', 10, 8.3),
+(33, 10, 'Chocolate Cake', 1, 5, 450, 'Veg', 4, 9.4),
+(34, 10, 'Strawberry Cheesecake', 1, 4, 500, 'Veg', 5, 9.1),
+(36, 10, 'Chocolate Brownie', 1, 5, 350, 'Veg', 4, 9.3),
+(37, 10, 'Caramel Pudding', 1, 5, 400, 'Veg', 5, 8.9),
+(38, 10, 'Mango Cheesecake', 1, 5, 550, 'Veg', 6, 9.0),
+(39, 10, 'Chocolate Fudge Cake', 1, 5, 500, 'Veg', 3, 9.5),
+(40, 10, 'Gulab Jamun', 1, 5, 300, 'Veg', 6, 9.6),
+(41, 10, 'Rice Pudding', 1, 5, 350, 'Veg', 7, 8.8),
+(42, 10, 'Fruit Custard', 1, 5, 400, 'Veg', 8, 8.7),
+(43, 10, 'Mango Ice Cream', 1, 5, 350, 'Veg', 6, 9.2),
+(35, 10, 'Vanilla Ice Cream', 1, 4, 300, 'Veg', 6, 8.9);
+
+
+INSERT INTO users (cust_id, name) VALUES
+(1, 'James'),
+(2, 'William'),
+(3, 'Emma'),
+(4, 'Benjamin'),
+(5, 'Olivia'),
+(6, 'Daniel'),
+(7, 'Sophia'),
+(8, 'Henry');
+
+
+INSERT INTO user_data
+(order_id, user_id, rest_id, dish_id, name, spice, sweet, price, type_of_food, healthy_rating)
+VALUES
+(1, 1, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
+(2, 1, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
+(3, 1, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
+(4, 2, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
+(5, 2, 3, 9, 'Beef Bihari Kabab', 5, 0, 750, 'Non-Veg', 6),
+(6, 2, 5, 17, 'Arrabbiata Pasta', 4, 0, 750, 'Veg', 7),
+(7, 3, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
+(8, 3, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
+(9, 3, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
+(10, 4, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
+(11, 4, 2, 6, 'Loaded Fries', 2, 0, 400, 'Veg', 3),
+(12, 4, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
+(13, 5, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
+(14, 5, 5, 18, 'Margherita Pizza', 1, 0, 650, 'Veg', 7),
+(15, 5, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
+(16, 6, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
+(17, 6, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
+(18, 6, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
+(19, 7, 5, 16, 'Chicken Alfredo', 2, 0, 850, 'Non-Veg', 6),
+(20, 7, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
+(21, 7, 2, 5, 'Chicken Pizza', 2, 0, 700, 'Non-Veg', 5),
+(22, 8, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
+(23, 8, 1, 3, 'Chicken Handi', 3, 0, 750, 'Non-Veg', 6),
+(24, 8, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4);
+""")
+
+print("Data inserted Successfully")
+
+conn.commit()
+conn.close()
