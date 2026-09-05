@@ -110,6 +110,7 @@ Open the printed Vite URL, click **Start ordering**, and choose voice or text.
   use that
 - No production deployment config yet; this is built and tested for local
   development.
+- Note: Data is AI generated so there might be some porblems in the rating of spice level and sweet level of the dishes so don't worry about that.
 
 ## License
 
