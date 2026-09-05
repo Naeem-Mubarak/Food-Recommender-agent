@@ -5,6 +5,7 @@ from models.data_extractor import english_translator
 
 def order_collection(state : state_schema):
 
+
     # interrupting flow to collect the data from user
     order_data = interrupt({
           'type' : "order info collection",
@@ -18,6 +19,9 @@ def order_collection(state : state_schema):
     # state updation
     state['order'] = order_info['order']
     state["order_info"] = order_info['order_info']
+
+    # reseting the iteration and 
+    state['iteration'] = 0
 
     return state
 
