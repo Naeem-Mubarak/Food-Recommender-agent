@@ -106,11 +106,18 @@ export function useVoiceAgent() {
     socket.onopen = () => {}
 
     socket.onmessage = async (event) => {
+
       if (typeof event.data === 'string') {
         try {
           const parsed = JSON.parse(event.data)
           if (Array.isArray(parsed)) {
             setRecommendations(parsed)
+            setSelectedItem(null)
+          } else if (parsed.reset) {
+            // sent when the backend returns to order_collection - clears
+            // stale dish data so old recommendations don't linger while
+            // a fresh order is being typed/spoken
+            setRecommendations(null)
             setSelectedItem(null)
           } else if (parsed.user_id !== undefined) {
             setUserId(parsed.user_id)
