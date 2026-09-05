@@ -1,6 +1,6 @@
 from graph.agent_schema import state_schema
 from langgraph.types import interrupt
-from graph.schemas.confirm_order_schema import chain1,chain2
+from graph.schemas.confirm_order_schema import chain2
 
 
 def format_order(item: dict) -> str:
