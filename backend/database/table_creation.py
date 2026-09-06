@@ -7,13 +7,13 @@ cursor , conn =db_connection(DB_PATH)
 
 cursor.executescript("""
 CREATE TABLE IF NOT EXISTS restaurants (
-    branch_id INTEGER PRIMARY KEY,
+    branch_id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     cuisine_type TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS dishes (
-    dish_id INTEGER PRIMARY KEY,
+    dish_id INTEGER PRIMARY KEY AUTOINCREMENT,
     restaurant_id INTEGER NOT NULL,
     name TEXT NOT NULL,
     spice INTEGER NOT NULL CHECK(spice BETWEEN 1 AND 5),
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS users(
 );
 
 CREATE TABLE IF NOT EXISTS user_data(
-    order_id INTEGER PRIMARY KEY,
+    order_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER,
     rest_id INTEGER,
     dish_id INTEGER,
@@ -51,6 +51,8 @@ CREATE TABLE IF NOT EXISTS user_data(
 """)
 
 print("Table created successfully")
+
+
 
 conn.commit()
 conn.close()
