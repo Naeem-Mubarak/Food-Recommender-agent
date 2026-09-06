@@ -13,6 +13,7 @@ export default function RecommendationsTable({ dishes }) {
               <th className="px-4 py-3 font-medium">Dish</th>
               <th className="px-4 py-3 font-medium hidden sm:table-cell">Restaurant</th>
               <th className="px-4 py-3 font-medium">Spice</th>
+              <th className="px-4 py-3 font-medium">Sweet</th>
               <th className="px-4 py-3 font-medium">Price</th>
             </tr>
           </thead>
@@ -25,7 +26,10 @@ export default function RecommendationsTable({ dishes }) {
                 </td>
                 <td className="px-4 py-3 hidden sm:table-cell text-cream-400">{dish.restaurant_name}</td>
                 <td className="px-4 py-3">
-                  <SpiceLevel level={dish.spice_level} />
+                  <LevelDots level={dish.spice_level} color="chili" />
+                </td>
+                <td className="px-4 py-3">
+                  <LevelDots level={dish.sweet_level} color="saffron" />
                 </td>
                 <td className="px-4 py-3 font-mono text-saffron-400">Rs. {dish.dish_price}</td>
               </tr>
@@ -37,9 +41,10 @@ export default function RecommendationsTable({ dishes }) {
   )
 }
 
-function SpiceLevel({ level = 0 }) {
+function LevelDots({ level = 0, color }) {
+  const dotColor = color === 'saffron' ? 'text-saffron-500' : 'text-chili-500'
   return (
-    <span className="font-mono text-xs text-chili-500">
+    <span className={`font-mono text-xs ${dotColor}`}>
       {'●'.repeat(level)}
       <span className="text-char-700">{'●'.repeat(Math.max(0, 5 - level))}</span>
     </span>
