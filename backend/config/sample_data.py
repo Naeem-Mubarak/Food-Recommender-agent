@@ -79,32 +79,32 @@ INSERT INTO users (cust_id, name) VALUES
 
 
 INSERT INTO user_data
-(order_id, user_id, rest_id, dish_id, name, spice, sweet, price, type_of_food, healthy_rating)
+(user_id, rest_id, dish_id, name, spice, sweet, price, type_of_food, healthy_rating)
 VALUES
-(1, 1, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
-(2, 1, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
-(3, 1, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
-(4, 2, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
-(5, 2, 3, 9, 'Beef Bihari Kabab', 5, 0, 750, 'Non-Veg', 6),
-(6, 2, 5, 17, 'Arrabbiata Pasta', 4, 0, 750, 'Veg', 7),
-(7, 3, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
-(8, 3, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
-(9, 3, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
-(10, 4, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
-(11, 4, 2, 6, 'Loaded Fries', 2, 0, 400, 'Veg', 3),
-(12, 4, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
-(13, 5, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
-(14, 5, 5, 18, 'Margherita Pizza', 1, 0, 650, 'Veg', 7),
-(15, 5, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
-(16, 6, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
-(17, 6, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
-(18, 6, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
-(19, 7, 5, 16, 'Chicken Alfredo', 2, 0, 850, 'Non-Veg', 6),
-(20, 7, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
-(21, 7, 2, 5, 'Chicken Pizza', 2, 0, 700, 'Non-Veg', 5),
-(22, 8, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
-(23, 8, 1, 3, 'Chicken Handi', 3, 0, 750, 'Non-Veg', 6),
-(24, 8, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4);
+(1, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
+(1, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
+(1, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
+(2, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
+(2, 3, 9, 'Beef Bihari Kabab', 5, 0, 750, 'Non-Veg', 6),
+(2, 5, 17, 'Arrabbiata Pasta', 4, 0, 750, 'Veg', 7),
+(3, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
+(3, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
+(3, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
+( 4, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4),
+( 4, 2, 6, 'Loaded Fries', 2, 0, 400, 'Veg', 3),
+( 4, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
+( 5, 4, 10, 'Chicken Salad', 1, 0, 450, 'Non-Veg', 10),
+( 5, 5, 18, 'Margherita Pizza', 1, 0, 650, 'Veg', 7),
+( 5, 4, 12, 'Vegetable Wrap', 1, 0, 350, 'Veg', 10),
+( 6, 1, 1, 'Chicken Biryani', 4, 0, 450, 'Non-Veg', 6),
+( 6, 1, 2, 'Chicken Karahi', 5, 0, 850, 'Non-Veg', 5),
+( 6, 3, 8, 'Chicken Tikka', 4, 0, 600, 'Non-Veg', 8),
+( 7, 5, 16, 'Chicken Alfredo', 2, 0, 850, 'Non-Veg', 6),
+( 7, 4, 11, 'Grilled Chicken Bowl', 2, 0, 650, 'Non-Veg', 9),
+( 7, 2, 5, 'Chicken Pizza', 2, 0, 700, 'Non-Veg', 5),
+( 8, 3, 7, 'Seekh Kabab', 4, 0, 500, 'Non-Veg', 7),
+( 8, 1, 3, 'Chicken Handi', 3, 0, 750, 'Non-Veg', 6),
+( 8, 2, 4, 'Zinger Burger', 3, 0, 550, 'Non-Veg', 4);
 """)
 
 print("Data inserted Successfully")
