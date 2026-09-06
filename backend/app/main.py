@@ -32,7 +32,6 @@ app = FastAPI(lifespan=lifespan)
 
 
 
-
 @app.websocket("/agent")
 async def food_recommendation_agent(websocket : WebSocket):
 
@@ -71,6 +70,10 @@ async def food_recommendation_agent(websocket : WebSocket):
 
              await websocket.send_json({'user_id': interrupt_data['new_id']})
 
+        elif interrupt_type == 'order info collection':
+            
+            await websocket.send_json({'reset': True})  # when loop breaks then go to order_info_collection again
+        
         # agent reply
         print("AGENT WILL SPEAK:", interrupt_data['instruction'])
 
