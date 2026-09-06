@@ -22,6 +22,7 @@ def order_collection(state : state_schema):
 
     # reseting the iteration and 
     state['iteration'] = 0
+    state['recommendations'] = []
 
     return state
 
