@@ -86,7 +86,8 @@ the next input arrives, rather than restarting the conversation.
 cd backend
 cp .env.example .env   # fill in GROQ_API_KEY, GOOGLE_API_KEY, DATABASE_URL
 uv sync
-uv run python -m database.table_creation   # sets up + seeds the SQLite db
+uv run python -m database.table_creation   # sets up + SQLite db creation
+uv run python -m config.sample_data        # to seed the data into DB
 uv run python -m uvicorn app.main:app --reload --ws wsproto --ws-max-size 20000000 --ws-ping-interval 20 --ws-ping-timeout 3600
 ```
 
