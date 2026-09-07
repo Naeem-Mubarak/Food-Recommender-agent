@@ -9,7 +9,7 @@ def menu_loader():
 
     cursor.execute("""
           SELECT
-          r.branch_id, r.name , r.cuisine_type, d.dish_id, d.name, d.spice, d.price, d.type_of_food, d.healthy_rating, d.popularity_score
+          r.branch_id, r.name , r.cuisine_type, d.dish_id, d.name, d.spice, d.sweet_level, d.price, d.type_of_food, d.healthy_rating, d.popularity_score
           FROM dishes as d
           INNER JOIN restaurants as r
           ON r.branch_id = d.restaurant_id
