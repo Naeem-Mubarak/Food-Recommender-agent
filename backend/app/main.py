@@ -103,7 +103,7 @@ async def food_recommendation_agent(websocket : WebSocket):
             Command(resume=text),
             config
         )
-             
+    await websocket.close()
 
              
 
