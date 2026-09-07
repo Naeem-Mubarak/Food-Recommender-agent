@@ -9,7 +9,7 @@ def order_collection(state : state_schema):
     # interrupting flow to collect the data from user
     order_data = interrupt({
           'type' : "order info collection",
-          'instruction' : "Tell me what kind of eatable you want"
+          'instruction' : "Tell me what kind of eatable you want and what's your budget"
       })
 
     state['text'] = order_data
