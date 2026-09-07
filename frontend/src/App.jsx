@@ -51,7 +51,18 @@ export default function App() {
           </div>
         )}
 
-        {!notStarted && (
+        {status === 'complete' && (
+          <div className="text-center animate-rise-in">
+            <p className="font-display text-3xl text-saffron-400">
+              Your order's on its way.
+            </p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-cream-400 mt-3">
+              Order placed
+            </p>
+          </div>
+        )}
+
+        {!notStarted && status !== 'complete' && (
           <>
             <UserIdBadge userId={userId} />
 
@@ -62,7 +73,7 @@ export default function App() {
               status={inputMode === 'voice' ? status : (status === 'agent_speaking' ? status : 'waiting_for_user')}
               frequencyData={frequencyData}
               onTap={inputMode === 'voice' ? toggleMic : undefined}
-              disabled={inputMode !== 'voice' || status === 'error' || status === 'complete'}
+              disabled={inputMode !== 'voice' || status === 'error'}
             />
 
             {/* Mode toggle - switch anytime except mid-recording */}
@@ -92,12 +103,6 @@ export default function App() {
             {errorMessage && (
               <p className="font-mono text-xs text-chili-500 max-w-sm text-center">
                 {errorMessage}
-              </p>
-            )}
-
-            {status === 'complete' && (
-              <p className="font-display text-2xl text-saffron-400 animate-rise-in">
-                Your order's on its way.
               </p>
             )}
 

@@ -11,6 +11,7 @@ export default function SelectedItemCard({ item }) {
         <p className="text-cream-400 text-sm mt-1">{item.restaurant_name} · {item.cuisine_type}</p>
         <div className="flex items-center gap-4 mt-4 font-mono text-xs text-cream-400">
           <span>Spice {item.spice_level}/5</span>
+          <span>Sweet {item.sweet_level}/5</span>
           <span className="text-saffron-400">Rs. {item.dish_price}</span>
           <span>{item.type_of_food}</span>
         </div>
