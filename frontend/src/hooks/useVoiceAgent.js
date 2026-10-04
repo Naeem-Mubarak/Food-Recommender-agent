@@ -18,6 +18,51 @@ const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/agent'
 const BAR_COUNT = 48
 const MIN_RECORDING_MS = 600
 
+// Encodes raw PCM samples into a real WAV file (16-bit mono).
+// We build the WAV ourselves rather than relying on MediaRecorder,
+// because MediaRecorder's output codec varies by browser (Chrome gives
+// WebM/Opus, Safari doesn't support it at all) - which meant the bytes
+// we sent didn't reliably match the format the backend told Whisper to
+// expect, producing garbled or empty transcriptions.
+function encodeWav(samplesArray, sampleRate) {
+  const length = samplesArray.reduce((sum, arr) => sum + arr.length, 0)
+  const merged = new Float32Array(length)
+  let offset = 0
+  for (const arr of samplesArray) {
+    merged.set(arr, offset)
+    offset += arr.length
+  }
+
+  const buffer = new ArrayBuffer(44 + merged.length * 2)
+  const view = new DataView(buffer)
+
+  const writeString = (v, off, str) => {
+    for (let i = 0; i < str.length; i++) v.setUint8(off + i, str.charCodeAt(i))
+  }
+
+  writeString(view, 0, 'RIFF')
+  view.setUint32(4, 36 + merged.length * 2, true)
+  writeString(view, 8, 'WAVE')
+  writeString(view, 12, 'fmt ')
+  view.setUint32(16, 16, true)
+  view.setUint16(20, 1, true)        // PCM
+  view.setUint16(22, 1, true)        // mono
+  view.setUint32(24, sampleRate, true)
+  view.setUint32(28, sampleRate * 2, true)
+  view.setUint16(32, 2, true)
+  view.setUint16(34, 16, true)
+  writeString(view, 36, 'data')
+  view.setUint32(40, merged.length * 2, true)
+
+  let idx = 44
+  for (let i = 0; i < merged.length; i++, idx += 2) {
+    const s = Math.max(-1, Math.min(1, merged[i]))
+    view.setInt16(idx, s < 0 ? s * 0x8000 : s * 0x7fff, true)
+  }
+
+  return new Blob([view], { type: 'audio/wav' })
+}
+
 export function useVoiceAgent() {
   // 'idle' | 'connecting' | 'agent_speaking' | 'listening' | 'processing' | 'waiting_for_user' | 'complete' | 'error'
   const [status, setStatus] = useState('idle')
@@ -32,8 +77,7 @@ export function useVoiceAgent() {
   const analyserRef = useRef(null)
   const rafRef = useRef(null)
 
-  const mediaRecorderRef = useRef(null)
-  const chunksRef = useRef([])
+  const recorderRef = useRef(null)
   const micStreamRef = useRef(null)
   const recordingStartRef = useRef(0)
 
@@ -162,18 +206,24 @@ export function useVoiceAgent() {
       }
       const ctx = audioContextRef.current
       const micSource = ctx.createMediaStreamSource(stream)
+
       const analyser = ctx.createAnalyser()
       analyser.fftSize = 128
       micSource.connect(analyser)
       analyserRef.current = analyser
       runVisualizerLoop()
 
-      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm;codecs=opus' })
-      chunksRef.current = []
-      recorder.ondataavailable = (e) => chunksRef.current.push(e.data)
-      recorder.start()
+      // manual PCM capture - guarantees a real WAV file every time,
+      // regardless of which browser or codec is in play
+      const processor = ctx.createScriptProcessor(4096, 1, 1)
+      const samples = []
+      processor.onaudioprocess = (e) => {
+        samples.push(new Float32Array(e.inputBuffer.getChannelData(0)))
+      }
+      micSource.connect(processor)
+      processor.connect(ctx.destination)
 
-      mediaRecorderRef.current = recorder
+      recorderRef.current = { processor, micSource, samples, sampleRate: ctx.sampleRate }
       recordingStartRef.current = Date.now()
       setStatus('listening')
     } catch (e) {
@@ -183,35 +233,35 @@ export function useVoiceAgent() {
     }
   }, [runVisualizerLoop])
 
-  const stopListeningAndSend = useCallback(() => {
-    const recorder = mediaRecorderRef.current
-    if (!recorder) return
+  const stopListeningAndSend = useCallback(async () => {
+    const rec = recorderRef.current
+    if (!rec) return
 
     const elapsed = Date.now() - recordingStartRef.current
     stopVisualizerLoop()
 
-    recorder.onstop = async () => {
-      micStreamRef.current?.getTracks().forEach((t) => t.stop())
+    rec.processor.disconnect()
+    rec.micSource.disconnect()
+    micStreamRef.current?.getTracks().forEach((t) => t.stop())
+    recorderRef.current = null
 
-      if (elapsed < MIN_RECORDING_MS) {
-        setStatus('waiting_for_user')
-        setErrorMessage('Hold the button a little longer while you speak.')
-        return
-      }
-      setErrorMessage(null)
-
-      const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
-      const buffer = await blob.arrayBuffer()
-
-      if (socketRef.current?.readyState === WebSocket.OPEN) {
-        socketRef.current.send(buffer)
-        setStatus('processing')
-      } else {
-        setStatus('error')
-        setErrorMessage('Lost connection to the backend.')
-      }
+    if (elapsed < MIN_RECORDING_MS) {
+      setStatus('waiting_for_user')
+      setErrorMessage('Hold the button a little longer while you speak.')
+      return
     }
-    recorder.stop()
+    setErrorMessage(null)
+
+    const wavBlob = encodeWav(rec.samples, rec.sampleRate)
+    const buffer = await wavBlob.arrayBuffer()
+
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(buffer)
+      setStatus('processing')
+    } else {
+      setStatus('error')
+      setErrorMessage('Lost connection to the backend.')
+    }
   }, [stopVisualizerLoop])
 
   const toggleMic = useCallback(() => {
