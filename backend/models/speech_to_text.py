@@ -9,7 +9,7 @@ async def voice_transcript_generator(voice : bytes):
 
     audio_file = BytesIO(voice)
     # Groq's API needs a filename hint, even in-memory
-    audio_file.name = 'audio.wav'
+    audio_file.name = 'audio.webm'
     
     data = await groq_client.audio.transcriptions.create(
         file=audio_file,
