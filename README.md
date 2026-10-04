@@ -62,19 +62,48 @@ the next input arrives, rather than restarting the conversation.
 - Web Audio API (`AnalyserNode`) driving a real frequency visualization off
   the actual playing/captured audio — not a decorative animation
 
-## Project structure
+## 📁 Project Structure
 
-├── assets/ architecture diagrams
-├── backend/
-│ ├── app/ FastAPI entry point, the WebSocket endpoint
-│ ├── graph/ LangGraph nodes, schemas, and the compiled graph
-│ ├── database/ SQLite schema, seed data, and query helpers
-│ ├── models/ Groq/Gemini client wrappers (STT, TTS, extraction)
-│ └── config/ environment loading, prompts, sample data
-└── frontend/
-└── src/
-├── hooks/ useVoiceAgent - websocket, audio, and text input logic
-└── components/ the orb, recommendation table, input toggle, status UI
+```text
+Food-Recommender-agent/
+│
+├── 📂 assets/
+│   ├── agent_architecture.gif
+│   └── agent_architecture.png
+│
+├── 📂 backend/
+│   ├── 📂 app/              # FastAPI application & WebSocket endpoint
+│   ├── 📂 graph/            # LangGraph workflow & agent state
+│   ├── 📂 database/         # SQLite data & database operations
+│   ├── 📂 models/           # STT, TTS & LLM integrations
+│   └── 📂 config/           # Prompts, configuration & sample data
+│
+├── 📂 frontend/
+│   └── 📂 src/
+│       ├── 📂 components/   # UI components
+│       └── 📂 hooks/        # WebSocket & voice-agent logic
+│
+├── 📄 README.md
+└── 📄 LICENSE
+```
+
+### Backend
+
+| Directory   | Responsibility                                     |
+| ----------- | -------------------------------------------------- |
+| `app/`      | FastAPI server and WebSocket communication         |
+| `graph/`    | LangGraph state machine and agent workflow         |
+| `database/` | Users, menu, restaurants and orders                |
+| `models/`   | Whisper STT, Orpheus TTS and Gemini integrations   |
+| `config/`   | Prompts, environment configuration and sample data |
+
+### Frontend
+
+| Directory     | Responsibility                                                 |
+| ------------- | -------------------------------------------------------------- |
+| `components/` | UI, recommendations, controls and visual elements              |
+| `hooks/`      | Voice recording, WebSocket communication and agent interaction |
+
 
 
 
