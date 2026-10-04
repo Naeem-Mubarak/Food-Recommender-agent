@@ -76,28 +76,41 @@ General rules:
 
 
 voice_llm_prompt = """
-Transcribe casual Pakistani speech about food, eating, restaurants, cravings,
-and ordering. The speaker may use Roman Urdu, Urdu, English, or mixed speech.
+This audio is a conversational interaction between a user and a food ordering assistant.
 
-Produce a natural Roman Urdu + English transcript preserving the speaker's
-meaning and casual style.
+Transcribe the user's speech accurately in English.
 
-Rules:
-- Do NOT translate Urdu into English.
-- Write Urdu in natural Roman Urdu.
-- Keep English words as English.
-- Correct obvious ASR, pronunciation, and spelling errors.
-- Reconstruct broken words when the meaning is clear.
-- Do not formalize, paraphrase, or add information.
-- Return only the corrected transcript.
+The user may say anything relevant to a normal conversation, including:
+- their name
+- user ID or other identification information
+- greetings and introductions
+- answers to questions
+- food and drink names
+- restaurant or dish names
+- quantities, prices, numbers, dates, and times
+- dietary preferences or restrictions
+- food preferences and dislikes
+- delivery or ordering information
+- changes or corrections to an order
+- confirmations or cancellations
+- questions, requests, and general conversational sentences
 
-Examples:
-"yar aj mera kuch cheziius kahan ka man ha"
-→ "yaar aaj mera kuch cheesy khane ka mann hai"
-
-"mujhe spicy burger khana ha"
-→ "mujhe spicy burger khana hai"
-
-"yar koi acha sa burger suggest karo"
-→ "yaar koi acha sa burger suggest karo"
+Transcription rules:
+- Transcribe only what the user actually says.
+- Preserve the user's intended meaning and wording.
+- Do not translate.
+- Do not summarize.
+- Do not paraphrase.
+- Do not answer the user.
+- Do not provide recommendations.
+- Do not continue or complete the user's sentence.
+- Do not infer information that was not spoken.
+- Do not add information from the conversation context.
+- Preserve names, IDs, numbers, quantities, prices, food names, restaurant names, and other proper nouns as accurately as possible.
+- Correct only obvious speech-recognition errors when the intended word is unambiguous.
+- If a word or phrase is unclear, do not invent a replacement.
+- Do not generate text from background noise, music, silence, or unrelated audio.
+- Do not insert common phrases, advertisements, subtitles, or phrases such as "subscribe", "like and subscribe", "thank you for watching", or similar content unless they are actually spoken.
+- If there is no intelligible speech, return an empty transcript.
+- Return only the English transcription and nothing else.
 """
